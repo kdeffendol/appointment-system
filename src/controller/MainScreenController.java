@@ -56,13 +56,13 @@ public class MainScreenController implements Initializable {
      * @throws IOException 
      */
     public void appointmentsButtonPushed(ActionEvent event) throws IOException {
-        Parent partPage = FXMLLoader.load(getClass().getResource("/view/AppointmentTableViewScreen.fxml"));
-        Scene partScene = new Scene(partPage);
+        Parent appointmentsPage = FXMLLoader.load(getClass().getResource("/view/AppointmentTableViewScreen.fxml"));
+        Scene appointmentsScene = new Scene(appointmentsPage);
         
         //this line gets the stage information
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         
-        window.setScene(partScene);
+        window.setScene(appointmentsScene);
         window.show();
     }
     
