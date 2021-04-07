@@ -69,7 +69,7 @@ public class CustomerTableViewScreenController implements Initializable {
     }
     
     public void deleteCustomerButtonPushed(ActionEvent event) throws IOException {
-        
+        //delete customer from database
     }
     
     public void backButtonPushed(ActionEvent event) throws IOException {
