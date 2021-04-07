@@ -34,7 +34,7 @@ public class AddCustomerScreenController implements Initializable {
     @FXML Button saveButton;
     @FXML Button cancelButton;
 
-        /**
+     /**
      * 
      * @param event
      * @throws IOException 
