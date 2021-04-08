@@ -25,7 +25,7 @@ import javafx.stage.Stage;
  *
  * @author kelsey
  */
-public class AddAppointmentScreenController implements Initializable {
+public class ModifyAppointmentScreenController implements Initializable {
     
     @FXML TextField appointmentIdTextField;
     @FXML TextField titleTextField;
@@ -38,13 +38,8 @@ public class AddAppointmentScreenController implements Initializable {
     
     @FXML Button saveButton;
     @FXML Button cancelButton;
+
     
-    
-    /**
-     * 
-     * @param event
-     * @throws IOException 
-     */
     public void cancelButtonPushed(ActionEvent event) throws IOException {
         //add confirmation message?
         
