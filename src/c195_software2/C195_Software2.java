@@ -33,8 +33,12 @@ public class C195_Software2 extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        //connect to the database
         DBConnection.startConnection();
         
         launch(args);
+        
+        //close connection to the database when window is closed
+        DBConnection.closeConnection();
     }
 }

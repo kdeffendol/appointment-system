@@ -45,6 +45,17 @@ public class DBConnection {
         
         return conn;
     }
+    
+    public static void closeConnection() {
+        try {
+            conn.close();
+            System.out.println("Connection closed.");
+        }
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+    }
 
 
     
