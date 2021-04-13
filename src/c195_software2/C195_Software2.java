@@ -17,6 +17,10 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import utils.DBQuery;
 import java.sql.Statement;
+import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 /**
  *
@@ -38,28 +42,31 @@ public class C195_Software2 extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws SQLException {
+        
         //connect to the database
         Connection conn = DBConnection.startConnection();
         
         DBQuery.setStatement(conn); //create statement object
         Statement statement = DBQuery.getStatement(); // get Statement reference
+              
+        String selectStatement = "SELECT * FROM countries"; //select statement
+        statement.execute(selectStatement); //execute statement
+        ResultSet rs = statement.getResultSet(); //get result set
         
-        // Raw SQL insert statement
-        String insertStatement = "INSERT INTO countries(Country, Create_Date, Created_By, Last_Updated_By) "
-                + "VALUES('US', '2021-04-12 00:00:00', 'admin', 'admin')";
-        
-        //Execute SQL statement
-        statement.execute(insertStatement);
-        
-        //Confirm rows affected
-        if(statement.getUpdateCount() > 0) {
-            System.out.println(statement.getUpdateCount() + " row(s) affected.");
-        } else {
-            System.out.println("No change.");
+        //Forward scroll ResultSet
+        while(rs.next() == true) {
+            int countryId = rs.getInt("Country_ID");
+            String countryName = rs.getString("Country");
+            LocalDate date = rs.getDate("Create_Date").toLocalDate();
+            LocalTime time = rs.getTime("Create_Date").toLocalTime();
+            String createdBy = rs.getString("Created_By");
+            LocalDateTime lastUpdate = rs.getTimestamp("Last_Update").toLocalDateTime();
+            
+            //Display record
+            System.out.println(countryId + " | " + countryName + " | " + date + " " + time
+                                 + " | " + createdBy + " | " + lastUpdate);
+            
         }
-        
-        
-        
         
         launch(args);
         
@@ -67,3 +74,27 @@ public class C195_Software2 extends Application {
         DBConnection.closeConnection();
     }
 }
+
+
+
+//        // Raw SQL insert statement
+////        String insertStatement = "INSERT INTO countries(Country, Create_Date, Created_By, Last_Updated_By) "
+////                                + "VALUES('US', '2021-04-12 00:00:00', 'admin', 'admin')";
+//        
+////        //Variable Insert
+////        String countryName = "Canada";
+////        String createDate = "2021-04-12 00:00:00";
+////        String createdBy = "admin";
+////        String lastUpdateBy = "admin";
+//        
+//        
+//        //Execute SQL statement
+//        statement.execute(insertStatement);
+//        
+//        //Confirm rows affected
+//        if(statement.getUpdateCount() > 0) {
+//            System.out.println(statement.getUpdateCount() + " row(s) affected.");
+//        } else {
+//            System.out.println("No change.");
+//        }
+//        
