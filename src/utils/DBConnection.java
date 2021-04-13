@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package utils;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,7 +6,7 @@ import java.sql.SQLException;
 
 /**
  *
- * @author kelsey
+ * @author Kelsey Deffendol kdeffen@wgu.edu
  */
 public class DBConnection {
     //JDBC URL parts
@@ -29,6 +25,10 @@ public class DBConnection {
     private static final String password = "53688966985"; //Password
     
     
+    /**
+     * creates connection to the database
+     * @return conn - Connection object
+     */
     public static Connection startConnection() {
         try {
            Class.forName(MYSQLJDBCDriver); 
@@ -46,6 +46,10 @@ public class DBConnection {
         return conn;
     }
     
+    
+    /**
+     * Closes the connection to the database
+     */
     public static void closeConnection() {
         try {
             conn.close();
