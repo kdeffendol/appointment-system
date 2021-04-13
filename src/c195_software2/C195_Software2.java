@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import utils.DBConnection;
 
 /**
  *
@@ -32,6 +33,8 @@ public class C195_Software2 extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        DBConnection.startConnection();
+        
         launch(args);
     }
 }

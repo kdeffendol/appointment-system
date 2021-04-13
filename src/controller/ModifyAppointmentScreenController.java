@@ -54,7 +54,7 @@ public class ModifyAppointmentScreenController implements Initializable {
     }
     
     public void saveButtonPushed(ActionEvent event) throws IOException {
-        //save appointment into database
+        //save modified appointment back into database
         //go back to AppointmentTableViewScreen
     }
     
