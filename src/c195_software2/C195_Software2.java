@@ -12,6 +12,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import utils.DBConnection;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.HashSet;
+import utils.DBQuery;
+import java.sql.Statement;
 
 /**
  *
@@ -32,9 +37,29 @@ public class C195_Software2 extends Application {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         //connect to the database
-        DBConnection.startConnection();
+        Connection conn = DBConnection.startConnection();
+        
+        DBQuery.setStatement(conn); //create statement object
+        Statement statement = DBQuery.getStatement(); // get Statement reference
+        
+        // Raw SQL insert statement
+        String insertStatement = "INSERT INTO countries(Country, Create_Date, Created_By, Last_Updated_By) "
+                + "VALUES('US', '2021-04-12 00:00:00', 'admin', 'admin')";
+        
+        //Execute SQL statement
+        statement.execute(insertStatement);
+        
+        //Confirm rows affected
+        if(statement.getUpdateCount() > 0) {
+            System.out.println(statement.getUpdateCount() + " row(s) affected.");
+        } else {
+            System.out.println("No change.");
+        }
+        
+        
+        
         
         launch(args);
         
