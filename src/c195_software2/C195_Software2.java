@@ -49,23 +49,29 @@ public class C195_Software2 extends Application {
         DBQuery.setStatement(conn); //create statement object
         Statement statement = DBQuery.getStatement(); // get Statement reference
               
-        String selectStatement = "SELECT * FROM countries"; //select statement
-        statement.execute(selectStatement); //execute statement
-        ResultSet rs = statement.getResultSet(); //get result set
+        String selectStatement = "SELECT * FROM countriesx"; //select statement
         
-        //Forward scroll ResultSet
-        while(rs.next() == true) {
-            int countryId = rs.getInt("Country_ID");
-            String countryName = rs.getString("Country");
-            LocalDate date = rs.getDate("Create_Date").toLocalDate();
-            LocalTime time = rs.getTime("Create_Date").toLocalTime();
-            String createdBy = rs.getString("Created_By");
-            LocalDateTime lastUpdate = rs.getTimestamp("Last_Update").toLocalDateTime();
-            
-            //Display record
-            System.out.println(countryId + " | " + countryName + " | " + date + " " + time
-                                 + " | " + createdBy + " | " + lastUpdate);
-            
+        
+        try {
+            statement.execute(selectStatement); //execute statement
+            ResultSet rs = statement.getResultSet(); //get result set
+
+            //Forward scroll ResultSet
+            while(rs.next() == true) {
+                int countryId = rs.getInt("Country_ID");
+                String countryName = rs.getString("Country");
+                LocalDate date = rs.getDate("Create_Date").toLocalDate();
+                LocalTime time = rs.getTime("Create_Date").toLocalTime();
+                String createdBy = rs.getString("Created_By");
+                LocalDateTime lastUpdate = rs.getTimestamp("Last_Update").toLocalDateTime();
+
+                //Display record
+                System.out.println(countryId + " | " + countryName + " | " + date + " " + time
+                                     + " | " + createdBy + " | " + lastUpdate);
+
+            }
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
         }
         
         launch(args);
