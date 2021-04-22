@@ -21,6 +21,9 @@ import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Scanner;
+import java.util.Set;
+import java.sql.PreparedStatement;
 
 /**
  *
@@ -43,36 +46,45 @@ public class C195_Software2 extends Application {
      */
     public static void main(String[] args) throws SQLException {
         
-        //connect to the database
         Connection conn = DBConnection.startConnection();
+        String insertStatement = "UPDATE countries SET Country = ?, Created_By = ? WHERE Country = ?";
         
-        DBQuery.setStatement(conn); //create statement object
-        Statement statement = DBQuery.getStatement(); // get Statement reference
-              
-        String selectStatement = "SELECT * FROM countriesx"; //select statement
+        DBQuery.setPreparedStatement(conn, insertStatement); //create prepared statement
+        
+        PreparedStatement ps = DBQuery.getPreparedStatement();
         
         
-        try {
-            statement.execute(selectStatement); //execute statement
-            ResultSet rs = statement.getResultSet(); //get result set
-
-            //Forward scroll ResultSet
-            while(rs.next() == true) {
-                int countryId = rs.getInt("Country_ID");
-                String countryName = rs.getString("Country");
-                LocalDate date = rs.getDate("Create_Date").toLocalDate();
-                LocalTime time = rs.getTime("Create_Date").toLocalTime();
-                String createdBy = rs.getString("Created_By");
-                LocalDateTime lastUpdate = rs.getTimestamp("Last_Update").toLocalDateTime();
-
-                //Display record
-                System.out.println(countryId + " | " + countryName + " | " + date + " " + time
-                                     + " | " + createdBy + " | " + lastUpdate);
-
-            }
-        } catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
+          String country, newCountry, createdBy;
+//        String createDate = "2021-04-21 00:00:00";
+//        String createdBy = "admin";
+//        String lastUpdatedBy = "admin";
+        
+        //scanner
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter country to update: ");
+        country = sc.nextLine();
+        
+        System.out.print("Enter new country: ");
+        newCountry = sc.nextLine();
+        
+        System.out.print("Enter user: ");
+        createdBy = sc.nextLine();
+        
+        //key value mapping  
+        ps.setString(1, newCountry);
+        ps.setString(2, createdBy);
+        ps.setString(3, country);
+        
+        ps.execute(); //execute PreparedStatement
+        
+        //check rows affected
+        if(ps.getUpdateCount() > 0)
+            System.out.println(ps.getUpdateCount() + " rows affected");
+        else
+            System.out.println("no change");
+        
+        
+        
         
         launch(args);
         
@@ -104,3 +116,34 @@ public class C195_Software2 extends Application {
 //            System.out.println("No change.");
 //        }
 //        
+////connect to the database
+//        Connection conn = DBConnection.startConnection();
+//        
+//        DBQuery.setStatement(conn); //create statement object
+//        Statement statement = DBQuery.getStatement(); // get Statement reference
+//              
+//        String selectStatement = "SELECT * FROM countriesx"; //select statement
+//        
+//        
+//        try {
+//            statement.execute(selectStatement); //execute statement
+//            ResultSet rs = statement.getResultSet(); //get result set
+//
+//            //Forward scroll ResultSet
+//            while(rs.next() == true) {
+//                int countryId = rs.getInt("Country_ID");
+//                String countryName = rs.getString("Country");
+//                LocalDate date = rs.getDate("Create_Date").toLocalDate();
+//                LocalTime time = rs.getTime("Create_Date").toLocalTime();
+//                String createdBy = rs.getString("Created_By");
+//                LocalDateTime lastUpdate = rs.getTimestamp("Last_Update").toLocalDateTime();
+//
+//                //Display record
+//                System.out.println(countryId + " | " + countryName + " | " + date + " " + time
+//                                     + " | " + createdBy + " | " + lastUpdate);
+//
+//            }
+//        } catch(Exception e) {
+//            System.out.println(e.getMessage());
+//        }
+

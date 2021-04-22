@@ -7,6 +7,7 @@ package utils;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
 
 /**
  *
@@ -14,21 +15,21 @@ import java.sql.Statement;
  */
 public class DBQuery {
     
-    private static Statement statement; //Statement reference
+    private static PreparedStatement statement; //Statement reference
 
     /**
      * Create statement object
      * @param conn - Connection object
      * @throws SQLException 
      */
-    public static void setStatement(Connection conn) throws SQLException {
-        statement = conn.createStatement();
+    public static void setPreparedStatement(Connection conn, String sqlStatement) throws SQLException {
+        statement = conn.prepareStatement(sqlStatement);
     }
     
     /**
      * @return Statement object
      */
-    public static Statement getStatement() {
+    public static PreparedStatement getPreparedStatement() {
         return statement;
     }
     
