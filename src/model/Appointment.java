@@ -17,8 +17,8 @@ public class Appointment {
     private String description;
     private String location;
     private String type;
-    private String startTime;
-    private String endTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private LocalDateTime createDate;
     private String createdBy;
     private LocalDateTime lastUpdate;
@@ -26,6 +26,26 @@ public class Appointment {
     private int customerId;
     private int userId;
     private int contactId;
+    
+    public Appointment(int id, String title, String description, String location, String type, LocalDateTime startTime,
+                        LocalDateTime endTime, LocalDateTime createDate, String createdBy, LocalDateTime lastUpdate, 
+                        String lastUpdatedBy, int customerId, int userId, int contactId) {
+        
+        appointmentId = id;
+        this.title = title;
+        this.description = description;
+        this.location = location;
+        this.type = type;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.createDate = createDate;
+        this.createdBy = createdBy;
+        this.lastUpdate = lastUpdate;
+        this.lastUpdatedBy = lastUpdatedBy;
+        this.customerId = customerId;
+        this.userId = userId;
+        this.contactId = contactId;
+    }
 
     public int getAppointmentId() {
         return appointmentId;
@@ -83,19 +103,19 @@ public class Appointment {
         this.type = type;
     }
 
-    public String getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
-    public String getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 

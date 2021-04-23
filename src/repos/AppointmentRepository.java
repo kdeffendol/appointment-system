@@ -35,7 +35,7 @@ public class AppointmentRepository {
         ResultSet rs = ps.getResultSet(); //get result set
         
         if(rs.next() == false) {
-            throw new Exception("UserId not found");
+            throw new Exception("AppointmentId not found");
         }
         
                 
