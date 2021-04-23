@@ -5,25 +5,27 @@
  */
 package model;
 
+import java.time.LocalDateTime;
+
 /**
  *
  * @author Kelsey Deffendol
  */
 public class Appointment {
     private int appointmentId;
-    private int customerId;
-    private int userId;
     private String title;
     private String description;
     private String location;
-    private String contact;
     private String type;
     private String startTime;
     private String endTime;
-    private String createDate;
+    private LocalDateTime createDate;
     private String createdBy;
-    //private lastUpdate
-    private String lastUpdateBy;
+    private LocalDateTime lastUpdate;
+    private String lastUpdatedBy;
+    private int customerId;
+    private int userId;
+    private int contactId;
 
     public int getAppointmentId() {
         return appointmentId;
@@ -73,14 +75,6 @@ public class Appointment {
         this.location = location;
     }
 
-    public String getContact() {
-        return contact;
-    }
-
-    public void setContact(String contact) {
-        this.contact = contact;
-    }
-
     public String getType() {
         return type;
     }
@@ -105,11 +99,11 @@ public class Appointment {
         this.endTime = endTime;
     }
 
-    public String getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(String createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 
@@ -121,13 +115,31 @@ public class Appointment {
         this.createdBy = createdBy;
     }
 
-    public String getLastUpdateBy() {
-        return lastUpdateBy;
+    public String getLastUpdatedBy() {
+        return lastUpdatedBy;
     }
 
-    public void setLastUpdateBy(String lastUpdateBy) {
-        this.lastUpdateBy = lastUpdateBy;
+    public void setLastUpdateBy(String lastUpdatedBy) {
+        this.lastUpdatedBy = lastUpdatedBy;
     }
+
+    public LocalDateTime getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(LocalDateTime lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
+    public int getContactId() {
+        return contactId;
+    }
+
+    public void setContactId(int contactId) {
+        this.contactId = contactId;
+    }
+    
+    
     
     
 }
