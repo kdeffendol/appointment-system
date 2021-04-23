@@ -24,6 +24,8 @@ import java.time.LocalTime;
 import java.util.Scanner;
 import java.util.Set;
 import java.sql.PreparedStatement;
+import model.User;
+import repos.UserRepository;
 
 /**
  *
@@ -44,52 +46,12 @@ public class C195_Software2 extends Application {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, Exception {
+        User testUser = UserRepository.getUserByUsername("test");
         
-        Connection conn = DBConnection.startConnection();
-        String insertStatement = "UPDATE countries SET Country = ?, Created_By = ? WHERE Country = ?";
-        
-        DBQuery.setPreparedStatement(conn, insertStatement); //create prepared statement
-        
-        PreparedStatement ps = DBQuery.getPreparedStatement();
-        
-        
-          String country, newCountry, createdBy;
-//        String createDate = "2021-04-21 00:00:00";
-//        String createdBy = "admin";
-//        String lastUpdatedBy = "admin";
-        
-        //scanner
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter country to update: ");
-        country = sc.nextLine();
-        
-        System.out.print("Enter new country: ");
-        newCountry = sc.nextLine();
-        
-        System.out.print("Enter user: ");
-        createdBy = sc.nextLine();
-        
-        //key value mapping  
-        ps.setString(1, newCountry);
-        ps.setString(2, createdBy);
-        ps.setString(3, country);
-        
-        ps.execute(); //execute PreparedStatement
-        
-        //check rows affected
-        if(ps.getUpdateCount() > 0)
-            System.out.println(ps.getUpdateCount() + " rows affected");
-        else
-            System.out.println("no change");
-        
-        
-        
+        System.out.println(testUser.getUserId() + " | " + testUser.getUsername() + " | " + testUser.getPassword());
         
         launch(args);
-        
-        //close connection to the database when window is closed
-        DBConnection.closeConnection();
     }
 }
 

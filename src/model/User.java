@@ -5,22 +5,29 @@
  */
 package model;
 
+import java.time.LocalDateTime;
+
 /**
  *
  * @author kelsey
  */
 public class User {
-    int userId;
-    String username;
-    String password;
-    boolean active;
-    //datetime createDate;
-    String createdBy;
-    //timestamp lastUpdate;
-    String lastUpdateBy;
+    private int userId;
+    private String username;
+    private String password;
+    private LocalDateTime createDate;
+    private String createdBy;
+    private LocalDateTime lastUpdate;
+    private String lastUpdateBy;
 
-    public User() {
-        
+    public User(int userId, String username, String password, LocalDateTime createDate, String createdBy, LocalDateTime lastUpdate, String lastUpdateBy) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.createDate = createDate;
+        this.createdBy = createdBy;
+        this.lastUpdate = lastUpdate;
+        this.lastUpdateBy = lastUpdateBy;
     }
 
     public int getUserId() {
@@ -47,11 +54,5 @@ public class User {
         this.password = password;
     }
 
-    public boolean getActive() {
-        return active;
-    }
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
 }
