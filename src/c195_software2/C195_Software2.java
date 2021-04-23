@@ -24,7 +24,10 @@ import java.time.LocalTime;
 import java.util.Scanner;
 import java.util.Set;
 import java.sql.PreparedStatement;
+import javafx.collections.ObservableList;
+import model.Country;
 import model.User;
+import repos.CountryRepository;
 import repos.UserRepository;
 
 /**
@@ -47,9 +50,9 @@ public class C195_Software2 extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws SQLException, Exception {
-        User testUser = UserRepository.getUserByUsername("test");
+        ObservableList<Country> testCountryList = CountryRepository.getAllCountries();
         
-        System.out.println(testUser.getUserId() + " | " + testUser.getUsername() + " | " + testUser.getPassword());
+        System.out.println(testCountryList);
         
         launch(args);
     }
