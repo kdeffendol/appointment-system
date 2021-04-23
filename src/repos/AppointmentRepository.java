@@ -21,7 +21,34 @@ import utils.DBQuery;
  */
 public class AppointmentRepository {
     
-    
+    public static void addAppointment(Appointment appointment) throws SQLException {
+        Connection conn = DBConnection.startConnection();
+        
+        String insertStatement = "INSERT INTO appointments(Title, Description, Location, Type, "
+                + "Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, "
+                + "Customer_ID, User_ID, Contact_ID) "
+                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
+        
+        DBQuery.setPreparedStatement(conn, insertStatement); //create prepared statement  
+        PreparedStatement ps = DBQuery.getPreparedStatement();
+        
+        ps.setString(1, appointment.getTitle());
+        ps.setString(2, appointment.getDescription());
+        ps.setString(3, appointment.getLocation());
+        ps.setString(4, appointment.getType());
+        ps.setString(5, appointment.getStartTime().toString());
+        ps.setString(6, appointment.getEndTime().toString());
+        ps.setString(7, appointment.getCreateDate().toString());
+        ps.setString(8, appointment.getCreatedBy());
+        ps.setString(9, appointment.getLastUpdate().toString());
+        ps.setString(10, appointment.getLastUpdatedBy());
+        ps.setInt(11, appointment.getCustomerId());
+        ps.setInt(12, appointment.getUserId());
+        ps.setInt(13, appointment.getContactId());
+        
+        ps.execute();
+        
+    }
     
     
     /**

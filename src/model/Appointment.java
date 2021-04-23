@@ -46,6 +46,25 @@ public class Appointment {
         this.userId = userId;
         this.contactId = contactId;
     }
+    
+        public Appointment(String title, String description, String location, String type, LocalDateTime startTime,
+                        LocalDateTime endTime, LocalDateTime createDate, String createdBy, LocalDateTime lastUpdate, 
+                        String lastUpdatedBy, int customerId, int userId, int contactId) {
+        
+        this.title = title;
+        this.description = description;
+        this.location = location;
+        this.type = type;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.createDate = createDate;
+        this.createdBy = createdBy;
+        this.lastUpdate = lastUpdate;
+        this.lastUpdatedBy = lastUpdatedBy;
+        this.customerId = customerId;
+        this.userId = userId;
+        this.contactId = contactId;
+    }
 
     public int getAppointmentId() {
         return appointmentId;
