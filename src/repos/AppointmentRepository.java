@@ -31,7 +31,7 @@ public class AppointmentRepository {
         Connection conn = DBConnection.startConnection();
         
         String insertStatement = "INSERT INTO appointments(Title, Description, Location, Type, "
-                + "Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, "
+                + "Start, End, Created_By, Last_Update, "
                 + "Customer_ID, User_ID, Contact_ID) "
                 + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
         
@@ -44,9 +44,7 @@ public class AppointmentRepository {
         ps.setString(4, appointment.getType());
         ps.setString(5, appointment.getStartTime().toString());
         ps.setString(6, appointment.getEndTime().toString());
-        ps.setString(7, appointment.getCreateDate().toString());
         ps.setString(8, appointment.getCreatedBy());
-        ps.setString(9, appointment.getLastUpdate().toString());
         ps.setString(10, appointment.getLastUpdatedBy());
         ps.setInt(11, appointment.getCustomerId());
         ps.setInt(12, appointment.getUserId());
@@ -78,7 +76,7 @@ public class AppointmentRepository {
     public static void updateAppointment(Appointment appt) throws SQLException {
         Connection conn = DBConnection.startConnection();
         
-        String updateStatement = "UPDATE appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Create_Date = ?, Created_By = ?, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ?"
+        String updateStatement = "UPDATE appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Created_By = ?, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ?"
                 + " WHERE Appointment_ID = ?";
         
         DBQuery.setPreparedStatement(conn, updateStatement);
@@ -90,13 +88,12 @@ public class AppointmentRepository {
         ps.setString(4, appt.getType());
         ps.setString(5, appt.getStartTime().toString());
         ps.setString(6, appt.getEndTime().toString());
-        ps.setString(7, appt.getCreateDate().toString());
-        ps.setString(8, appt.getCreatedBy());
-        ps.setString(9, appt.getLastUpdatedBy());
-        ps.setInt(10, appt.getCustomerId());
-        ps.setInt(11, appt.getUserId());
-        ps.setInt(12, appt.getContactId());
-        ps.setInt(13, appt.getAppointmentId());
+        ps.setString(7, appt.getCreatedBy());
+        ps.setString(8, appt.getLastUpdatedBy());
+        ps.setInt(9, appt.getCustomerId());
+        ps.setInt(10, appt.getUserId());
+        ps.setInt(11, appt.getContactId());
+        ps.setInt(12, appt.getAppointmentId());
         
         ps.execute();
     }
