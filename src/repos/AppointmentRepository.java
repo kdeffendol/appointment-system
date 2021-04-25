@@ -10,9 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.HashSet;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.Appointment;
-import model.User;
 import utils.DBConnection;
 import utils.DBQuery;
 
@@ -151,5 +151,45 @@ public class AppointmentRepository {
         DBConnection.closeConnection(); //close connection
         
         return appointment;       
+    }
+    
+    public static ObservableList<Appointment> getAllAppointments() throws SQLException {
+        Connection conn = DBConnection.startConnection(); 
+        
+        String selectStatement = "SELECT * FROM appointments";
+        
+        DBQuery.setPreparedStatement(conn, selectStatement); //create prepared statement       
+        PreparedStatement ps = DBQuery.getPreparedStatement();
+        
+        ps.execute();
+        
+        ObservableList<Appointment> appointments = FXCollections.observableArrayList();
+        
+        ResultSet rs = ps.getResultSet(); //get result set
+        
+        //while loop to add to Appointments List
+        while (rs.next() == true) {
+            int id = rs.getInt("Appointment_ID");
+            String title = rs.getString("Title");
+            String description = rs.getString("Description");
+            String location = rs.getString("Location");
+            String type = rs.getString("Type");
+            LocalDateTime startTime = rs.getTimestamp("Start").toLocalDateTime();
+            LocalDateTime endTime = rs.getTimestamp("End").toLocalDateTime();
+            LocalDateTime createDate = rs.getTimestamp("Create_Date").toLocalDateTime();
+            String createdBy = rs.getString("Created_By");
+            LocalDateTime lastUpdate = rs.getTimestamp("Last_Update").toLocalDateTime();
+            String lastUpdatedBy = rs.getString("Last_Updated_By");
+            int customerId = rs.getInt("Customer_ID");
+            int userId = rs.getInt("User_ID");
+            int contactId = rs.getInt("Contact_ID");
+            
+            Appointment appt = new Appointment(id, title, description, location, type, startTime, endTime, createDate, createdBy, lastUpdate, lastUpdatedBy, customerId, userId, contactId);
+            
+            appointments.add(appt);
+        }
+        
+        return appointments;
+        
     }
 }
