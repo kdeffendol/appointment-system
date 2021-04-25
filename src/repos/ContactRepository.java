@@ -10,8 +10,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.Contact;
 import model.Country;
+import model.FirstLevelDivision;
 import utils.DBConnection;
 import utils.DBQuery;
 
@@ -59,6 +62,35 @@ public class ContactRepository {
 
         
         return contact;  
+    }
+    
+    public static ObservableList<Contact> getAllContacts() throws SQLException {
+        Connection conn = DBConnection.startConnection(); 
+        
+        String selectStatement = "SELECT * FROM contacts";
+        
+        DBQuery.setPreparedStatement(conn, selectStatement); //create prepared statement       
+        PreparedStatement ps = DBQuery.getPreparedStatement();
+        
+        ps.execute();
+        
+        ObservableList<Contact> contacts = FXCollections.observableArrayList();
+        
+        ResultSet rs = ps.getResultSet(); //get result set
+        
+        //while loop to add to Contacts List
+        while (rs.next() == true) {
+            int contactId = rs.getInt("Contact_ID");
+            String name = rs.getString("Contact_Name");
+            String email = rs.getString("Email");
+
+            Contact contact = new Contact(contactId, name, email);
+
+            contacts.add(contact);
+        }
+        
+        return contacts;
+        
     }
     
     
