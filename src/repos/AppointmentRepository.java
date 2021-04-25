@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import model.Appointment;
 import model.User;
 import utils.DBConnection;
@@ -21,7 +22,12 @@ import utils.DBQuery;
  */
 public class AppointmentRepository {
     
-    public static void addAppointment(Appointment appointment) throws SQLException {
+    /**
+     * 
+     * @param appointment
+     * @throws SQLException 
+     */
+    public static void addAppointment(Appointment appointment) throws SQLException { //not tested
         Connection conn = DBConnection.startConnection();
         
         String insertStatement = "INSERT INTO appointments(Title, Description, Location, Type, "
@@ -48,6 +54,51 @@ public class AppointmentRepository {
         
         ps.execute();
         
+    }
+    
+    /**
+     * 
+     * @param apptId
+     * @throws SQLException 
+     */
+    public static void deleteAppointment(int apptId) throws SQLException {
+        Connection conn = DBConnection.startConnection();
+        
+        String deleteStatement = "DELETE FROM appointments WHERE Appointment_ID = ?";
+        
+        DBQuery.setPreparedStatement(conn, deleteStatement);
+        PreparedStatement ps = DBQuery.getPreparedStatement();
+        
+        ps.setInt(1, apptId);
+        
+        ps.execute();
+        
+    }
+    
+    public static void updateAppointment(Appointment appt) throws SQLException {
+        Connection conn = DBConnection.startConnection();
+        
+        String updateStatement = "UPDATE appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Create_Date = ?, Created_By = ?, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ?"
+                + " WHERE Appointment_ID = ?";
+        
+        DBQuery.setPreparedStatement(conn, updateStatement);
+        PreparedStatement ps = DBQuery.getPreparedStatement();
+        
+        ps.setString(1, appt.getTitle()); 
+        ps.setString(2, appt.getDescription());
+        ps.setString(3, appt.getLocation());
+        ps.setString(4, appt.getType());
+        ps.setString(5, appt.getStartTime().toString());
+        ps.setString(6, appt.getEndTime().toString());
+        ps.setString(7, appt.getCreateDate().toString());
+        ps.setString(8, appt.getCreatedBy());
+        ps.setString(9, appt.getLastUpdatedBy());
+        ps.setInt(10, appt.getCustomerId());
+        ps.setInt(11, appt.getUserId());
+        ps.setInt(12, appt.getContactId());
+        ps.setInt(13, appt.getAppointmentId());
+        
+        ps.execute();
     }
     
     
