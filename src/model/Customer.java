@@ -5,59 +5,97 @@
  */
 package model;
 import java.lang.String;
+import java.time.LocalDateTime;
 
 /**
  * Customer class
  * @author kelsey
  */
 public class Customer {
-    private int customerId;
-    private String customerName;
-    private int addressId;
-    private boolean active;
-    //private datetime createDate;
+    private int id;
+    private String name;
+    private String address;
+    private String postalCode;
+    private String phone;
+    private LocalDateTime createDate;
     private String createdBy;
-    //private timestamp lastUpdate;
+    private LocalDateTime lastUpdate;
     private String lastUpdateBy;
+    private int divisionId;
 
-    /**
-     * Customer constructor - creates a new customer
-     */
-    public Customer() {
-
+    public Customer(int id, String name, String address, String postalCode, String phone, LocalDateTime createDate, String createdBy, LocalDateTime lastUpdate, String lastUpdateBy, int divisionId) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.postalCode = postalCode;
+        this.phone = phone;
+        this.createDate = createDate;
+        this.createdBy = createdBy;
+        this.lastUpdate = lastUpdate;
+        this.lastUpdateBy = lastUpdateBy;
+        this.divisionId = divisionId;
     }
 
-    public int getCustomerId() {
-        return customerId;
+    public Customer(String name, String address, String postalCode, String phone, LocalDateTime createDate, String createdBy, LocalDateTime lastUpdate, String lastUpdateBy, int divisionId) {
+        this.name = name;
+        this.address = address;
+        this.postalCode = postalCode;
+        this.phone = phone;
+        this.createDate = createDate;
+        this.createdBy = createdBy;
+        this.lastUpdate = lastUpdate;
+        this.lastUpdateBy = lastUpdateBy;
+        this.divisionId = divisionId;
+    }
+    
+    
+
+    public int getId() {
+        return id;
     }
 
-    public void setId(int customerId) {
-        this.customerId = customerId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-
-    public String getCustomerName() {
-        return customerName;
+    public String getName() {
+        return name;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerId = customerId;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public int getAddressId() {
-        return addressId;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAddressId(int addressId) {
-        this.addressId = addressId;
-    } 
-
-    public boolean getActive() {
-        return active;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public LocalDateTime getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(LocalDateTime createDate) {
+        this.createDate = createDate;
     }
 
     public String getCreatedBy() {
@@ -68,11 +106,30 @@ public class Customer {
         this.createdBy = createdBy;
     }
 
-    public String getLastUpdatedBy() {
+    public LocalDateTime getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(LocalDateTime lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
+    public String getLastUpdateBy() {
         return lastUpdateBy;
     }
 
-    public void setLastUpdatedBy(String lastUpdateBy) {
+    public void setLastUpdateBy(String lastUpdateBy) {
         this.lastUpdateBy = lastUpdateBy;
     }
+
+    public int getDivisionId() {
+        return divisionId;
+    }
+
+    public void setDivisionId(int divisionId) {
+        this.divisionId = divisionId;
+    }
+    
+    
+    
 }
