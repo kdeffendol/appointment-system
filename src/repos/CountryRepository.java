@@ -20,7 +20,7 @@ import utils.DBQuery;
 
 /**
  *
- * @author kelsey
+ * @author Kelsey Deffendol - kdeffen@wgu.edu
  */
 public class CountryRepository {
     public static Country getCountryByCountryId(int countryId) throws SQLException, Exception {

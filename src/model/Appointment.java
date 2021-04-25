@@ -8,7 +8,7 @@ package model;
 import java.time.LocalDateTime;
 
 /**
- *
+ * Appointment class
  * @author Kelsey Deffendol
  */
 public class Appointment {

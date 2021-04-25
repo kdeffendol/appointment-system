@@ -32,7 +32,7 @@ import repos.UserRepository;
 
 /**
  *
- * @author kelsey
+ * @author Kelsey Deffendol - kdeffen@wgu.edu
  */
 public class C195_Software2 extends Application {
 

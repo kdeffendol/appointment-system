@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 /**
  *
- * @author kelsey
+ * @author Kelsey Deffendol - kdeffen@wgu.edu
  */
 public class FirstLevelDivision {
     private int id;

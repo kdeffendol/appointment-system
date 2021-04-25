@@ -19,7 +19,7 @@ import utils.DBQuery;
 
 /**
  *
- * @author kelsey
+ * @author Kelsey Deffendol - kdeffen@wgu.edu
  */
 public class FirstLevelDivRepository {
     public static FirstLevelDivision getDivisionbyId(int divisionId) throws SQLException, Exception {

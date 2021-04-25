@@ -20,7 +20,7 @@ import java.lang.Exception;
 
 /**
  *
- * @author kelsey
+ * @author Kelsey Deffendol - kdeffen@wgu.edu
  */
 public class UserRepository {
     public UserRepository() {

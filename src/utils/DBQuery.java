@@ -18,7 +18,7 @@ public class DBQuery {
     private static PreparedStatement statement; //Statement reference
 
     /**
-     * Create statement object
+     * Create prepared statement object
      * @param conn - Connection object
      * @throws SQLException 
      */
@@ -27,7 +27,7 @@ public class DBQuery {
     }
     
     /**
-     * @return Statement object
+     * @return prepared statement object
      */
     public static PreparedStatement getPreparedStatement() {
         return statement;
