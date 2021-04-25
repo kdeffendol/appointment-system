@@ -16,6 +16,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.lang.Exception;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import model.Appointment;
 
 
 /**
@@ -60,6 +63,39 @@ public class UserRepository {
         DBConnection.closeConnection(); //close connection
         
         return user;       
+    }
+    
+        public static ObservableList<User> getAllUsers() throws SQLException {
+        Connection conn = DBConnection.startConnection(); 
+        
+        String selectStatement = "SELECT * FROM users";
+        
+        DBQuery.setPreparedStatement(conn, selectStatement); //create prepared statement       
+        PreparedStatement ps = DBQuery.getPreparedStatement();
+        
+        ps.execute();
+        
+        ObservableList<User> users = FXCollections.observableArrayList();
+        
+        ResultSet rs = ps.getResultSet(); //get result set
+        
+        //while loop to add to Users List
+        while (rs.next() == true) {
+            int id = rs.getInt("User_ID");
+            String username = rs.getString("User_Name");
+            String password = rs.getString("Password");
+            LocalDateTime createDate = rs.getTimestamp("Create_Date").toLocalDateTime();
+            String createdBy = rs.getString("Created_By");
+            LocalDateTime lastUpdate = rs.getTimestamp("Last_Update").toLocalDateTime();
+            String lastUpdatedBy = rs.getString("Last_Updated_By");
+            
+            User user = new User(id, username, password, createDate, createdBy, lastUpdate, lastUpdatedBy);
+            
+            users.add(user);
+        }
+        
+        return users;
+        
     }
     
     
