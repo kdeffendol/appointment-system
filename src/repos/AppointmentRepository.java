@@ -33,7 +33,7 @@ public class AppointmentRepository {
         String insertStatement = "INSERT INTO appointments(Title, Description, Location, Type, "
                 + "Start, End, Created_By, Last_Update, "
                 + "Customer_ID, User_ID, Contact_ID) "
-                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         DBQuery.setPreparedStatement(conn, insertStatement); //create prepared statement  
         PreparedStatement ps = DBQuery.getPreparedStatement();
