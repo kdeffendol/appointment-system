@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import model.Customer;
 
 /**
  * FXML Controller class
@@ -50,6 +51,19 @@ public class AddCustomerScreenController implements Initializable {
      */
     public void cancelButtonPushed(ActionEvent event) throws IOException {
         
+    }
+    
+    public void createNewCustomer() {
+        Customer customer = new Customer();
+        
+        customer.setName(nameTextField.getText());
+        customer.setAddress(addressTextField.getText());
+        customer.setPostalCode(postalCodeTextField.getText());
+        customer.setPhone(phoneNumberTextField.getText());
+    }
+    
+    public String getFirstDivSelection() {
+        //search divisions by name
     }
     
     /**

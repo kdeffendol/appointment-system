@@ -22,6 +22,9 @@ public class Customer {
     private String lastUpdatedBy;
     private int divisionId;
 
+    public Customer() {   
+    }
+    
     public Customer(int id, String name, String address, String postalCode, String phone, LocalDateTime createDate, String createdBy, LocalDateTime lastUpdate, String lastUpdatedBy, int divisionId) {
         this.id = id;
         this.name = name;
@@ -139,6 +142,8 @@ public class Customer {
     public void setDivisionId(int divisionId) {
         this.divisionId = divisionId;
     }
+
+
     
     
     

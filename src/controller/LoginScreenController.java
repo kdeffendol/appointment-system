@@ -51,6 +51,7 @@ public class LoginScreenController implements Initializable {
         }
     }
     
+    
     public boolean checkLoginValidation() {
         boolean isValid = false;
         //check if username is in database
