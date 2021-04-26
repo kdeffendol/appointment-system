@@ -10,11 +10,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.User;
+import repos.UserRepository;
 
 /**
  * FXML Controller class
@@ -29,14 +32,46 @@ public class LoginScreenController implements Initializable {
     @FXML Button loginButton;
     
     public void loginButtonPressed(ActionEvent event) throws IOException {
-        Parent mainPage = FXMLLoader.load(getClass().getResource("/view/MainScreen.fxml"));
-        Scene mainScene = new Scene(mainPage);
         
-        //this line gets the stage information
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        if (checkLoginValidation() == true) {
+            Parent mainPage = FXMLLoader.load(getClass().getResource("/view/MainScreen.fxml"));
+            Scene mainScene = new Scene(mainPage);
+
+            //this line gets the stage information
+            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+            window.setScene(mainScene);
+            window.show();
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, 
+                "Username/Password is not correct. Try again.");
         
-        window.setScene(mainScene);
-        window.show();
+            alert.showAndWait();
+        }
+    }
+    
+    public boolean checkLoginValidation() {
+        boolean isValid = false;
+        //check if username is in database
+        String username = usernameTextField.getText();
+        
+        try {
+            User user = UserRepository.getUserByUsername(username);
+            System.out.println(passwordField.getText());
+            System.out.println(user.getPassword());
+            
+            //check if password is correct
+            if (user.getPassword().equals(passwordField.getText())) {
+                System.out.println("Hello there");
+                isValid = true;
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return isValid;
     }
 
     /**
