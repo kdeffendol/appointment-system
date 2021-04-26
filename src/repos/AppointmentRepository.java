@@ -44,11 +44,11 @@ public class AppointmentRepository {
         ps.setString(4, appointment.getType());
         ps.setString(5, appointment.getStartTime().toString());
         ps.setString(6, appointment.getEndTime().toString());
-        ps.setString(8, appointment.getCreatedBy());
-        ps.setString(9, appointment.getLastUpdatedBy());
-        ps.setInt(10, appointment.getCustomerId());
-        ps.setInt(11, appointment.getUserId());
-        ps.setInt(12, appointment.getContactId());
+        ps.setString(7, appointment.getCreatedBy());
+        ps.setString(8, appointment.getLastUpdatedBy());
+        ps.setInt(9, appointment.getCustomerId());
+        ps.setInt(10, appointment.getUserId());
+        ps.setInt(11, appointment.getContactId());
         
         ps.execute();
         
