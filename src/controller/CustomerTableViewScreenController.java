@@ -19,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import model.Customer;
 
 /**
  * FXML Controller class
@@ -28,14 +29,14 @@ import javafx.stage.Stage;
 public class CustomerTableViewScreenController implements Initializable {
     
     //table column variables
-    @FXML TableView customerTableView;
-    @FXML TableColumn customerIdColumn;
-    @FXML TableColumn nameTableColumn;
-    @FXML TableColumn addressTableColumn;
-    @FXML TableColumn firstDivisionTableColumn;
-    @FXML TableColumn countryTableColumn;
-    @FXML TableColumn postalCodeTableColumn;
-    @FXML TableColumn phoneNumberTableColumn;
+    @FXML TableView<Customer> customerTableView;
+    @FXML TableColumn<Customer, Integer> customerIdColumn;
+    @FXML TableColumn<Customer, String> nameTableColumn;
+    @FXML TableColumn<Customer, String> addressTableColumn;
+    @FXML TableColumn<Customer, String> firstDivisionTableColumn;
+    @FXML TableColumn<Customer, String> countryTableColumn;
+    @FXML TableColumn<Customer, String> postalCodeTableColumn;
+    @FXML TableColumn<Customer, String> phoneNumberTableColumn;
     
     //other
     @FXML Button addCustomerButton;
@@ -43,6 +44,8 @@ public class CustomerTableViewScreenController implements Initializable {
     @FXML Button deleteCustomerButton;
     @FXML Button backButton;
     
+    
+    //BUTTON FUNCTIONS------------------------------------------------------------
     
     public void addCustomerButtonPushed(ActionEvent event) throws IOException {
         Parent addCustomerPage = FXMLLoader.load(getClass().getResource("/view/AddCustomerScreen.fxml"));
@@ -83,13 +86,17 @@ public class CustomerTableViewScreenController implements Initializable {
         window.show();
     }
     
+    
+    
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        //set up table
+        
+        
     }    
     
 }
