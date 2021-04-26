@@ -33,7 +33,7 @@ public class AppointmentRepository {
         String insertStatement = "INSERT INTO appointments(Title, Description, Location, Type, "
                 + "Start, End, Created_By, Last_Update, "
                 + "Customer_ID, User_ID, Contact_ID) "
-                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
+                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         DBQuery.setPreparedStatement(conn, insertStatement); //create prepared statement  
         PreparedStatement ps = DBQuery.getPreparedStatement();
@@ -45,10 +45,10 @@ public class AppointmentRepository {
         ps.setString(5, appointment.getStartTime().toString());
         ps.setString(6, appointment.getEndTime().toString());
         ps.setString(8, appointment.getCreatedBy());
-        ps.setString(10, appointment.getLastUpdatedBy());
-        ps.setInt(11, appointment.getCustomerId());
-        ps.setInt(12, appointment.getUserId());
-        ps.setInt(13, appointment.getContactId());
+        ps.setString(9, appointment.getLastUpdatedBy());
+        ps.setInt(10, appointment.getCustomerId());
+        ps.setInt(11, appointment.getUserId());
+        ps.setInt(12, appointment.getContactId());
         
         ps.execute();
         

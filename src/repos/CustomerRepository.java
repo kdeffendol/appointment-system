@@ -24,8 +24,8 @@ public class CustomerRepository {
     public static void addCustomer(Customer customer) throws SQLException { //not tested
         Connection conn = DBConnection.startConnection();
         
-        String insertStatement = "INSERT INTO customer(Customer_Name, Address, Postal_Code, Phone, Created_By, Last_Updated_By, Division_ID) "
-                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?";
+        String insertStatement = "INSERT INTO customers (Customer_Name, Address, Postal_Code, Phone, Created_By, Last_Updated_By, Division_ID) "
+                + "VALUES(?, ?, ?, ?, ?, ?, ?)";
         
         DBQuery.setPreparedStatement(conn, insertStatement); //create prepared statement  
         PreparedStatement ps = DBQuery.getPreparedStatement();
@@ -35,8 +35,8 @@ public class CustomerRepository {
         ps.setString(3, customer.getPostalCode());
         ps.setString(4, customer.getPhone());
         ps.setString(5, customer.getCreatedBy());
-        ps.setString(7, customer.getLastUpdatedBy());
-        ps.setInt(8, customer.getDivisionId());
+        ps.setString(6, customer.getLastUpdatedBy());
+        ps.setInt(7, customer.getDivisionId());
 
         
         ps.execute();

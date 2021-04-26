@@ -76,7 +76,14 @@ public class AddCustomerScreenController implements Initializable {
      * @throws IOException 
      */
     public void cancelButtonPushed(ActionEvent event) throws IOException {
+        Parent mainPage = FXMLLoader.load(getClass().getResource("/view/AppointmentTableViewScreen.fxml"));
+        Scene mainScene = new Scene(mainPage);
         
+        //this line gets the stage information
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        
+        window.setScene(mainScene);
+        window.show();
     }
     
     public void populateCountryComboBox() throws SQLException {

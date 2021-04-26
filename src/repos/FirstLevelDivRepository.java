@@ -78,7 +78,7 @@ public class FirstLevelDivRepository {
                 
         //mapping
         int id = rs.getInt("Division_ID");
-        String division_name = rs.getString("Divison");
+        String division_name = rs.getString("Division");
         LocalDateTime createDate = rs.getTimestamp("Create_Date").toLocalDateTime();
         String createdBy = rs.getString("Created_By");
         LocalDateTime lastUpdate = rs.getTimestamp("Last_Update").toLocalDateTime();
