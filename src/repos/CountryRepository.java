@@ -59,6 +59,42 @@ public class CountryRepository {
         
     }
     
+        public static Country getCountryByCountryName(String countryName) throws SQLException, Exception {
+        Connection conn = DBConnection.startConnection(); 
+        
+        String selectStatement = "SELECT * FROM countries WHERE Country = ?";
+        
+        DBQuery.setPreparedStatement(conn, selectStatement); //create prepared statement       
+        PreparedStatement ps = DBQuery.getPreparedStatement();
+        
+        ps.setString(1, countryName);
+        ps.execute();
+        
+        ResultSet rs = ps.getResultSet(); //get result set
+        
+        if(rs.next() == false) {
+            throw new Exception("CountryName not found");
+        }
+        
+                
+        //mapping
+        int id = rs.getInt("Country_ID");
+        String country_Name = rs.getString("Country");
+        LocalDateTime createDate = rs.getTimestamp("Create_Date").toLocalDateTime();
+        String createdBy = rs.getString("Created_By");
+        LocalDateTime lastUpdate = rs.getTimestamp("Last_Update").toLocalDateTime();
+        String lastUpdatedBy = rs.getString("Last_Updated_By");
+        
+        //make user object
+        Country country = new Country(id, country_Name, createDate, createdBy, lastUpdate, lastUpdatedBy);
+                       
+        DBConnection.closeConnection(); //close connection
+
+        
+        return country;
+        
+    }
+    
     public static ObservableList<Country> getAllCountries() throws SQLException {
         Connection conn = DBConnection.startConnection(); 
         

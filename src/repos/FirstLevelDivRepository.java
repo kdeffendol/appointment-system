@@ -94,6 +94,44 @@ public class FirstLevelDivRepository {
         return division;
     }
     
+        public static ObservableList<FirstLevelDivision> getDivisionsbyCountryId(int countryId) throws SQLException, Exception {
+                Connection conn = DBConnection.startConnection(); 
+        
+        String selectStatement = "SELECT * FROM first_level_divisions WHERE Country_ID = ?";
+        
+        DBQuery.setPreparedStatement(conn, selectStatement); //create prepared statement       
+        PreparedStatement ps = DBQuery.getPreparedStatement();
+        
+        ps.setInt(1, countryId);
+        ps.execute();
+        
+        ObservableList<FirstLevelDivision> divisions = FXCollections.observableArrayList();
+        
+        ResultSet rs = ps.getResultSet(); //get result set
+        
+        while (rs.next() == true) {
+            int divisionId = rs.getInt("Division_ID");
+            String divisionName = rs.getString("Division");
+            LocalDateTime createDate = rs.getTimestamp("Create_Date").toLocalDateTime();
+            String createdBy = rs.getString("Created_By");
+            LocalDateTime lastUpdate = rs.getTimestamp("Last_Update").toLocalDateTime();
+            String lastUpdatedBy = rs.getString("Last_Updated_By");
+            int country_Id = rs.getInt("Country_ID");
+            
+            FirstLevelDivision division = new FirstLevelDivision(divisionId, divisionName, createDate, createdBy,
+                                            lastUpdate, lastUpdatedBy, country_Id);
+            
+            divisions.add(division);
+        }
+        
+       
+                       
+        DBConnection.closeConnection(); //close connection
+
+        
+        return divisions;
+    }
+    
     public static ObservableList<FirstLevelDivision> getAllDivisions() throws SQLException {
         Connection conn = DBConnection.startConnection(); 
         
@@ -110,7 +148,7 @@ public class FirstLevelDivRepository {
         
         //while loop to add to Divisions List
         while (rs.next() == true) {
-            int divisonId = rs.getInt("Division_ID");
+            int divisionId = rs.getInt("Division_ID");
             String divisionName = rs.getString("Division");
             LocalDateTime createDate = rs.getTimestamp("Create_Date").toLocalDateTime();
             String createdBy = rs.getString("Created_By");
@@ -118,7 +156,7 @@ public class FirstLevelDivRepository {
             String lastUpdatedBy = rs.getString("Last_Updated_By");
             int countryId = rs.getInt("Country_ID");
             
-            FirstLevelDivision division = new FirstLevelDivision(countryId, divisionName, createDate, createdBy,
+            FirstLevelDivision division = new FirstLevelDivision(divisionId, divisionName, createDate, createdBy,
                                             lastUpdate, lastUpdatedBy, countryId);
             
             divisions.add(division);

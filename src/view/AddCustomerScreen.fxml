@@ -63,26 +63,12 @@
             </HBox>
             <HBox prefHeight="50.0" prefWidth="408.0">
                <children>
-                  <Label prefHeight="75.0" prefWidth="150.0" text="Address 2">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="address2TextField" prefHeight="45.0" prefWidth="248.0">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </TextField>
-               </children>
-            </HBox>
-            <HBox prefHeight="50.0" prefWidth="408.0">
-               <children>
                   <Label prefHeight="50.0" prefWidth="150.0" text="Country">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="countryComboBox" prefHeight="40.0" prefWidth="170.0" promptText="Country" />
+                  <ComboBox fx:id="countryComboBox" onAction="#firstDivisionComboBoxClicked" prefHeight="40.0" prefWidth="170.0" promptText="Country" />
                </children>
             </HBox>
             <HBox prefHeight="50.0" prefWidth="408.0">
