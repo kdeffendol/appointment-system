@@ -86,6 +86,10 @@ public class AddCustomerScreenController implements Initializable {
         window.show();
     }
     
+    /**
+     * Populates the CountryComboBox using country data from the Countries table
+     * @throws SQLException 
+     */
     public void populateCountryComboBox() throws SQLException {
         //get all countries from database
         ObservableList<String> countryNames = FXCollections.observableArrayList();
@@ -100,7 +104,12 @@ public class AddCustomerScreenController implements Initializable {
         
         countryComboBox.setItems(countryNames);
     }
-    
+    /**
+     * Populates the FirstLevelDivision ComboBox using first-level division data from the First-Level Divisions table.
+     * It will only populate the table with Divisions with the given countryId.
+     * @param countryId
+     * @throws Exception 
+     */
     public void populateFirstDivisionComboBox(int countryId) throws Exception {
         ObservableList<FirstLevelDivision> divisions = FXCollections.observableArrayList();
         ObservableList<String> divisionNames = FXCollections.observableArrayList();
@@ -115,6 +124,10 @@ public class AddCustomerScreenController implements Initializable {
         firstDivisionComboBox.setItems(divisionNames);
     }
     
+    /**
+     * Creates new customer based on the information given in the GUI fields.
+     * @throws Exception 
+     */
     public void createNewCustomer() throws Exception {
         Customer customer = new Customer();
         
@@ -130,6 +143,11 @@ public class AddCustomerScreenController implements Initializable {
         
     }
     
+    /**
+     * Finds the ID of the selected first-level division ComboBox
+     * @return First-level division id of the selected item in firstDivision ComboBox.
+     * @throws Exception 
+     */
     public int getFirstDivSelection() throws Exception {
         //search divisions by name
         FirstLevelDivision selectedDivision = FirstLevelDivRepository.getDivisionbyName(firstDivisionComboBox.getValue().toString());
@@ -139,6 +157,10 @@ public class AddCustomerScreenController implements Initializable {
         return divId;
     }
     
+    /**
+     * Populates the first-division ComboBox after country is selected in Country ComboBox.
+     * @throws Exception 
+     */
     public void firstDivisionComboBoxClicked() throws Exception {
         //check country selected
         if (countryComboBox.getValue() != null) {
