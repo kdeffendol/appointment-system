@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 /**
  * Customer class
- * @author kelsey
+ * @author Kelsey Deffendol - kdeffen@wgu.edu
  */
 public class Customer {
     private int id;

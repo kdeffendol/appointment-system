@@ -9,9 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Country;
@@ -23,6 +21,14 @@ import utils.DBQuery;
  * @author Kelsey Deffendol - kdeffen@wgu.edu
  */
 public class CountryRepository {
+    
+    /**
+     * Returns a Country from its given Country ID
+     * @param countryId
+     * @return a Country object from its given Country ID
+     * @throws SQLException
+     * @throws Exception 
+     */
     public static Country getCountryByCountryId(int countryId) throws SQLException, Exception {
         Connection conn = DBConnection.startConnection(); 
         
@@ -59,7 +65,14 @@ public class CountryRepository {
         
     }
     
-        public static Country getCountryByCountryName(String countryName) throws SQLException, Exception {
+    /**
+     * Find and return a country based on its name.
+     * @param countryName
+     * @return country object by the given country name
+     * @throws SQLException
+     * @throws Exception 
+     */
+    public static Country getCountryByCountryName(String countryName) throws SQLException, Exception {
         Connection conn = DBConnection.startConnection(); 
         
         String selectStatement = "SELECT * FROM countries WHERE Country = ?";
@@ -95,6 +108,11 @@ public class CountryRepository {
         
     }
     
+    /**
+     * Returns all the countries in the database.
+     * @return ObservableList of Country objects
+     * @throws SQLException 
+     */
     public static ObservableList<Country> getAllCountries() throws SQLException {
         Connection conn = DBConnection.startConnection(); 
         

@@ -22,6 +22,14 @@ import utils.DBQuery;
  * @author Kelsey Deffendol - kdeffen@wgu.edu
  */
 public class FirstLevelDivRepository {
+    
+    /**
+     * Find and return division object by its given division id
+     * @param divisionId
+     * @return Division object by its unique divisionId
+     * @throws SQLException
+     * @throws Exception 
+     */
     public static FirstLevelDivision getDivisionbyId(int divisionId) throws SQLException, Exception {
         Connection conn = DBConnection.startConnection(); 
         
@@ -58,6 +66,13 @@ public class FirstLevelDivRepository {
         return division;
     }
     
+    /**
+     * Finds and returns a division object given its name
+     * @param divisionName
+     * @return division object
+     * @throws SQLException
+     * @throws Exception 
+     */
     public static FirstLevelDivision getDivisionbyName(String divisionName) throws SQLException, Exception {
                 Connection conn = DBConnection.startConnection(); 
         
@@ -94,8 +109,15 @@ public class FirstLevelDivRepository {
         return division;
     }
     
-        public static ObservableList<FirstLevelDivision> getDivisionsbyCountryId(int countryId) throws SQLException, Exception {
-                Connection conn = DBConnection.startConnection(); 
+    /**
+     * Finds and returns list of divisions with the given country id.
+     * @param countryId
+     * @return ObservableList of FirstLevelDivision objects
+     * @throws SQLException
+     * @throws Exception 
+     */
+    public static ObservableList<FirstLevelDivision> getDivisionsbyCountryId(int countryId) throws SQLException, Exception {
+        Connection conn = DBConnection.startConnection(); 
         
         String selectStatement = "SELECT * FROM first_level_divisions WHERE Country_ID = ?";
         
@@ -132,6 +154,11 @@ public class FirstLevelDivRepository {
         return divisions;
     }
     
+    /**
+     * Gets all First-level divisions from database
+     * @return ObservableList of First-Level Division objects
+     * @throws SQLException 
+     */
     public static ObservableList<FirstLevelDivision> getAllDivisions() throws SQLException {
         Connection conn = DBConnection.startConnection(); 
         

@@ -35,7 +35,7 @@ import repos.FirstLevelDivRepository;
 /**
  * FXML Controller class
  *
- * @author kelsey
+ * @author Kelsey Deffendol - kdeffen@wgu.edu
  */
 public class AddCustomerScreenController implements Initializable {
     
@@ -52,7 +52,7 @@ public class AddCustomerScreenController implements Initializable {
     @FXML Button cancelButton;
 
      /**
-     * 
+     * Creates a new Customer in database then returns user to the CustomerTableViewScreen.
      * @param event
      * @throws IOException 
      */

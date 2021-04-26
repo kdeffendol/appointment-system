@@ -18,12 +18,12 @@ import utils.DBQuery;
 
 /**
  *
- * @author kelsey
+ * @author Kelsey Deffendol - kdeffen@wgu.edu
  */
 public class AppointmentRepository {
     
     /**
-     * 
+     * Adds a new appointment to the database
      * @param appointment
      * @throws SQLException 
      */
@@ -55,7 +55,7 @@ public class AppointmentRepository {
     }
     
     /**
-     * 
+     * Deletes an appointment from the database.
      * @param apptId
      * @throws SQLException 
      */
@@ -73,6 +73,11 @@ public class AppointmentRepository {
         
     }
     
+    /**
+     * Update a given appointment in the database.
+     * @param appt
+     * @throws SQLException 
+     */
     public static void updateAppointment(Appointment appt) throws SQLException {
         Connection conn = DBConnection.startConnection();
         
@@ -100,7 +105,7 @@ public class AppointmentRepository {
     
     
     /**
-     * 
+     * Get an appointment given its appointment ID
      * @param appointmentId
      * @return the Appointment object created
      * @throws SQLException
@@ -141,7 +146,7 @@ public class AppointmentRepository {
         int contactId = rs.getInt("Contact_ID");
        
         
-        //make user object
+        //make appointment object
         Appointment appointment = new Appointment(id, title, description, location, type, startDate, endDate, 
                 createDate, createdBy, lastUpdate, lastUpdatedBy, customerId, userId, contactId);
                        
@@ -150,6 +155,11 @@ public class AppointmentRepository {
         return appointment;       
     }
     
+    /**
+     * Return all appointments stored in the database.
+     * @return ObservableList of Appointment objects
+     * @throws SQLException 
+     */
     public static ObservableList<Appointment> getAllAppointments() throws SQLException {
         Connection conn = DBConnection.startConnection(); 
         

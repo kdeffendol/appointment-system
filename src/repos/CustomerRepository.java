@@ -17,11 +17,17 @@ import utils.DBConnection;
 import utils.DBQuery;
 
 /**
- *
- * @author kelsey
+ * CustomerRepository class
+ * @author Kelsey
  */
 public class CustomerRepository {
-    public static void addCustomer(Customer customer) throws SQLException { //not tested
+    
+    /**
+     * Adds a new customer to the database.
+     * @param customer object to add to the database
+     * @throws SQLException 
+     */
+    public static void addCustomer(Customer customer) throws SQLException {
         Connection conn = DBConnection.startConnection();
         
         String insertStatement = "INSERT INTO customers (Customer_Name, Address, Postal_Code, Phone, Created_By, Last_Updated_By, Division_ID) "
@@ -44,7 +50,7 @@ public class CustomerRepository {
     }
     
     /**
-     * 
+     * Deletes a customer given its customer ID from the database
      * @param customerId
      * @throws SQLException 
      */
@@ -62,6 +68,11 @@ public class CustomerRepository {
         
     }
     
+    /**
+     * Updates a customer data in the database
+     * @param customer
+     * @throws SQLException 
+     */
     public static void updateCustomer(Customer customer) throws SQLException {
         Connection conn = DBConnection.startConnection();
         
@@ -132,6 +143,11 @@ public class CustomerRepository {
         return customer;       
     }
     
+    /**
+     * Returns all customers that are in the database
+     * @return ObservableList of Customer objects
+     * @throws SQLException 
+     */
     public static ObservableList<Customer> getAllCustomers() throws SQLException {
         Connection conn = DBConnection.startConnection(); 
         
