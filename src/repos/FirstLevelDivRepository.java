@@ -58,6 +58,42 @@ public class FirstLevelDivRepository {
         return division;
     }
     
+    public static FirstLevelDivision getDivisionbyName(String divisionName) throws SQLException, Exception {
+                Connection conn = DBConnection.startConnection(); 
+        
+        String selectStatement = "SELECT * FROM first_level_divisions WHERE Division = ?";
+        
+        DBQuery.setPreparedStatement(conn, selectStatement); //create prepared statement       
+        PreparedStatement ps = DBQuery.getPreparedStatement();
+        
+        ps.setString(1, divisionName);
+        ps.execute();
+        
+        ResultSet rs = ps.getResultSet(); //get result set
+        
+        if(rs.next() == false) {
+            throw new Exception("Division name not found");
+        }
+        
+                
+        //mapping
+        int id = rs.getInt("Division_ID");
+        String division_name = rs.getString("Divison");
+        LocalDateTime createDate = rs.getTimestamp("Create_Date").toLocalDateTime();
+        String createdBy = rs.getString("Created_By");
+        LocalDateTime lastUpdate = rs.getTimestamp("Last_Update").toLocalDateTime();
+        String lastUpdatedBy = rs.getString("Last_Updated_By");
+        int countryId = rs.getInt("Country_ID");
+        
+        //make user object
+        FirstLevelDivision division = new FirstLevelDivision(id, division_name, createDate, createdBy, lastUpdate, lastUpdatedBy, countryId);
+                       
+        DBConnection.closeConnection(); //close connection
+
+        
+        return division;
+    }
+    
     public static ObservableList<FirstLevelDivision> getAllDivisions() throws SQLException {
         Connection conn = DBConnection.startConnection(); 
         
