@@ -75,7 +75,7 @@ public class AddCustomerScreenController implements Initializable {
      * @throws IOException 
      */
     public void cancelButtonPushed(ActionEvent event) throws IOException {
-        Parent mainPage = FXMLLoader.load(getClass().getResource("/view/AppointmentTableViewScreen.fxml"));
+        Parent mainPage = FXMLLoader.load(getClass().getResource("/view/CustomerTableViewScreen.fxml"));
         Scene mainScene = new Scene(mainPage);
         
         //this line gets the stage information
