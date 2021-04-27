@@ -64,6 +64,39 @@ public class ContactRepository {
         return contact;  
     }
     
+    public static Contact getContactByContactName(String contactName) throws SQLException, Exception {
+        Connection conn = DBConnection.startConnection(); 
+        
+        String selectStatement = "SELECT * FROM contacts WHERE Contact_Name = ?";
+        
+        DBQuery.setPreparedStatement(conn, selectStatement); //create prepared statement       
+        PreparedStatement ps = DBQuery.getPreparedStatement();
+        
+        ps.setString(1, contactName);
+        ps.execute();
+        
+        ResultSet rs = ps.getResultSet(); //get result set
+        
+        if(rs.next() == false) {
+            throw new Exception("Contact Name not found");
+        }
+        
+                
+        //mapping
+        int id = rs.getInt("Contact_ID");
+        String name = rs.getString("Contact_Name");
+        String email = rs.getString("Email");
+
+        
+        //make user object
+        Contact contact = new Contact(id, name, email);
+                       
+        DBConnection.closeConnection(); //close connection
+
+        
+        return contact;  
+    }
+    
     public static ObservableList<Contact> getAllContacts() throws SQLException {
         Connection conn = DBConnection.startConnection(); 
         

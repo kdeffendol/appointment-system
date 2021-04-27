@@ -29,6 +29,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Appointment;
 import model.Contact;
+import repos.AppointmentRepository;
 import repos.ContactRepository;
 
 /**
@@ -46,6 +47,7 @@ public class AddAppointmentScreenController implements Initializable {
     @FXML TextField endDateTimeTextField;
     @FXML TextField customerIdTextField;
     @FXML TextField userIdTextField;
+    @FXML TextField typeTextField;
     @FXML ComboBox contactNameComboBox;
     
     @FXML Button saveButton;
@@ -70,21 +72,34 @@ public class AddAppointmentScreenController implements Initializable {
         window.show();
     }
     
-    public void saveButtonPushed(ActionEvent event) throws IOException {
+    public void saveButtonPushed(ActionEvent event) throws IOException, SQLException, Exception {
         //save appointment into database
+        createNewAppointment();
+        
         //go back to AppointmentTableViewScreen
+        Parent mainPage = FXMLLoader.load(getClass().getResource("/view/AppointmentTableViewScreen.fxml"));
+        Scene mainScene = new Scene(mainPage);
+        
+        //this line gets the stage information
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        
+        window.setScene(mainScene);
+        window.show();
     }
     
-    public void createNewAppointment() {
+    public void createNewAppointment() throws SQLException, Exception {
         //create empty appointment
         Appointment appt = new Appointment();
+        
+        //grab data from textfields
         appt.setTitle(titleTextField.getText());
         appt.setDescription(descriptionTextField.getText());
         appt.setLocation(locationTextField.getText());
+        appt.setType(typeTextField.getText());
         
         //convert start date string to LocalDateTime
         String str = startDateTimeTextField.getText();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
         
         appt.setStartTime(dateTime);
@@ -98,9 +113,24 @@ public class AddAppointmentScreenController implements Initializable {
         appt.setCustomerId(parseInt(customerIdTextField.getText()));
         appt.setUserId(parseInt(userIdTextField.getText()));
         
+        appt.setContactId(getContactNameSelection());
         
-        //fill variables w/ data from text fields
+        appt.setCreatedBy("test"); //BAD PLS CHANGE
+        appt.setLastUpdatedBy("test"); //ALSO BAD PLS CHANGE
         
+        //add appointment to database
+        AppointmentRepository.addAppointment(appt);
+        
+        
+        
+    }
+    
+    public int getContactNameSelection() throws Exception {
+        Contact contact = ContactRepository.getContactByContactName(contactNameComboBox.getValue().toString());
+        
+        int contactId = contact.getId();
+        
+        return contactId;
     }
     
     public void populateContactNamesComboBox() throws SQLException {

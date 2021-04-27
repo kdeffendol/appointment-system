@@ -12,7 +12,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddAppointmentScreenController">
    <children>
-      <VBox layoutX="96.0" layoutY="80.0" prefHeight="440.0" prefWidth="408.0">
+      <VBox layoutX="96.0" layoutY="61.0" prefHeight="481.0" prefWidth="408.0">
          <children>
             <HBox prefHeight="50.0" prefWidth="408.0">
                <children>
@@ -58,6 +58,20 @@
             </HBox>
             <HBox prefHeight="50.0" prefWidth="408.0">
                <children>
+                  <Label prefHeight="75.0" prefWidth="150.0" text="Type">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="typeTextField" prefHeight="45.0" prefWidth="248.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox prefHeight="50.0" prefWidth="408.0">
+               <children>
                   <Label prefHeight="75.0" prefWidth="150.0" text="Location">
                      <font>
                         <Font size="16.0" />
@@ -77,7 +91,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="startDateTimeTextField" prefHeight="45.0" prefWidth="248.0">
+                  <TextField fx:id="startDateTimeTextField" prefHeight="45.0" prefWidth="248.0" promptText="yyyy-MM-dd HH:mm">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -91,7 +105,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="endDateTimeTextField" prefHeight="45.0" prefWidth="248.0">
+                  <TextField fx:id="endDateTimeTextField" prefHeight="45.0" prefWidth="248.0" promptText="yyyy-MM-dd HH:mm">
                      <font>
                         <Font size="14.0" />
                      </font>

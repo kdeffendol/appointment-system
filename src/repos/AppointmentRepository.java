@@ -31,7 +31,7 @@ public class AppointmentRepository {
         Connection conn = DBConnection.startConnection();
         
         String insertStatement = "INSERT INTO appointments(Title, Description, Location, Type, "
-                + "Start, End, Created_By, Last_Update, "
+                + "Start, End, Created_By, Last_Updated_By, "
                 + "Customer_ID, User_ID, Contact_ID) "
                 + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         

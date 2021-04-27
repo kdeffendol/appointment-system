@@ -179,7 +179,7 @@ public class Appointment {
         return lastUpdatedBy;
     }
 
-    public void setLastUpdateBy(String lastUpdatedBy) {
+    public void setLastUpdatedBy(String lastUpdatedBy) {
         this.lastUpdatedBy = lastUpdatedBy;
     }
 
