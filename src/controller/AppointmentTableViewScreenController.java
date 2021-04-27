@@ -47,7 +47,7 @@ public class AppointmentTableViewScreenController implements Initializable {
     @FXML Button backButton;
     
     public void addAppointmentButtonPushed(ActionEvent event) throws IOException {
-        Parent addAppointmentPage = FXMLLoader.load(getClass().getResource("")); //add in add appointment file
+        Parent addAppointmentPage = FXMLLoader.load(getClass().getResource("/view/AddAppointmentScreen.fxml")); //add in add appointment file
         Scene addAppointmentScene = new Scene(addAppointmentPage);
         
         //this line gets the stage information
