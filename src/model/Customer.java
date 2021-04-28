@@ -60,8 +60,7 @@ public class Customer {
         this.lastUpdatedBy = lastUpdatedBy;
         this.divisionId = divisionId;
     }
-    
-    
+
 
     public int getId() {
         return id;

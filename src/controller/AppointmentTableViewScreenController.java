@@ -7,7 +7,10 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +22,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import model.Appointment;
+import model.Customer;
+import repos.AppointmentRepository;
+import repos.CustomerRepository;
 
 /**
  * FXML Controller class
@@ -74,6 +82,13 @@ public class AppointmentTableViewScreenController implements Initializable {
         
         window.setScene(mainScene);
         window.show();
+    }
+    
+    public void updateTable() throws SQLException {
+        ObservableList<Appointment> apptList = FXCollections.observableArrayList();
+        apptList = AppointmentRepository.getAllAppointments();
+        
+        customerIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
     }
     
     /**

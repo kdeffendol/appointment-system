@@ -7,7 +7,12 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,8 +23,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Customer;
+import repos.CustomerRepository;
 
 /**
  * FXML Controller class
@@ -86,6 +93,22 @@ public class CustomerTableViewScreenController implements Initializable {
         window.show();
     }
     
+    public void updateTable() throws SQLException {
+        ObservableList<Customer> customerList = FXCollections.observableArrayList();
+        customerList = CustomerRepository.getAllCustomers();
+        
+        customerIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        nameTableColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        addressTableColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
+        firstDivisionTableColumn.setCellValueFactory(new PropertyValueFactory<>("divisionId"));
+        //countryTableColumn.setCellValueFactory(new PropertyValueFactory<>("countryId"));
+        postalCodeTableColumn.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
+        phoneNumberTableColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        
+        
+        customerTableView.setItems(customerList);
+   
+    }
     
     
 
@@ -94,8 +117,12 @@ public class CustomerTableViewScreenController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //set up table
-        
+        try {
+            //set up table
+            updateTable();
+        } catch (SQLException ex) {
+            Logger.getLogger(CustomerTableViewScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }    
     
