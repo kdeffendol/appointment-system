@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
+import model.AppointmentViewModel;
 import utils.DBConnection;
 import utils.DBQuery;
 
@@ -192,6 +193,45 @@ public class AppointmentRepository {
             int contactId = rs.getInt("Contact_ID");
             
             Appointment appt = new Appointment(id, title, description, location, type, startTime, endTime, createDate, createdBy, lastUpdate, lastUpdatedBy, customerId, userId, contactId);
+            
+            appointments.add(appt);
+        }
+        
+        return appointments;
+        
+    }
+    
+    public static ObservableList<AppointmentViewModel> getAllAppointmentViewModels() throws SQLException {
+        Connection conn = DBConnection.startConnection(); 
+        
+        String selectStatement = "SELECT appointments.Appointment_ID, appointments.Title, "
+                + "appointments.Description, appointments.Location, contacts.Contact_Name, "
+                + "appointments.Type, appointments.Start, appointments.End, "
+                + "appointments.Customer_ID FROM appointments " 
+                + "INNER JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID";
+        
+        DBQuery.setPreparedStatement(conn, selectStatement); //create prepared statement       
+        PreparedStatement ps = DBQuery.getPreparedStatement();
+        
+        ps.execute();
+        
+        ObservableList<AppointmentViewModel> appointments = FXCollections.observableArrayList();
+        
+        ResultSet rs = ps.getResultSet(); //get result set
+        
+        //while loop to add to Appointments List
+        while (rs.next() == true) {
+            int id = rs.getInt("Appointment_ID");
+            String title = rs.getString("Title");
+            String description = rs.getString("Description");
+            String location = rs.getString("Location");
+            String contact = rs.getString("Contact_Name");
+            String type = rs.getString("Type");
+            LocalDateTime startTime = rs.getTimestamp("Start").toLocalDateTime();
+            LocalDateTime endTime = rs.getTimestamp("End").toLocalDateTime();
+            int customerId = rs.getInt("Customer_ID");
+            
+            AppointmentViewModel appt = new AppointmentViewModel(id, title, description, location, contact, type, startTime, endTime, customerId);
             
             appointments.add(appt);
         }

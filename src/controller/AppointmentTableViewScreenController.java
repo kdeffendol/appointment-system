@@ -25,6 +25,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
+import model.AppointmentViewModel;
 import model.Customer;
 import repos.AppointmentRepository;
 import repos.CustomerRepository;
@@ -36,16 +37,16 @@ import repos.CustomerRepository;
  */
 public class AppointmentTableViewScreenController implements Initializable {
     
-    @FXML TableView appointmentTableView;
-    @FXML TableColumn appointmentIdTableColumn;
-    @FXML TableColumn titleTableColumn;
-    @FXML TableColumn descriptionTableColumn;
-    @FXML TableColumn locationTableColumn;
-    @FXML TableColumn contactTableColumn;
-    @FXML TableColumn typeTableColumn;
-    @FXML TableColumn startDateTimeTableColumn;
-    @FXML TableColumn endDateTimeTableColumn;
-    @FXML TableColumn customerIdTableColumn;
+    @FXML TableView <AppointmentViewModel>appointmentTableView;
+    @FXML TableColumn <AppointmentViewModel, Integer>appointmentIdTableColumn;
+    @FXML TableColumn <AppointmentViewModel, String>titleTableColumn;
+    @FXML TableColumn <AppointmentViewModel, String>descriptionTableColumn;
+    @FXML TableColumn <AppointmentViewModel, String>locationTableColumn;
+    @FXML TableColumn <AppointmentViewModel, String>contactTableColumn;
+    @FXML TableColumn <AppointmentViewModel, String>typeTableColumn;
+    @FXML TableColumn <AppointmentViewModel, String>startDateTimeTableColumn;
+    @FXML TableColumn <AppointmentViewModel, String>endDateTimeTableColumn;
+    @FXML TableColumn <AppointmentViewModel, String>customerIdTableColumn;
     
     @FXML RadioButton monthViewRadioButton;
     @FXML RadioButton weekViewRadioButton;
