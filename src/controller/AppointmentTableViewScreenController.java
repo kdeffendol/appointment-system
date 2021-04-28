@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -87,18 +89,20 @@ public class AppointmentTableViewScreenController implements Initializable {
     }
     
     public void updateTable() throws SQLException {
-        ObservableList<Appointment> apptList = FXCollections.observableArrayList();
-        apptList = AppointmentRepository.getAllAppointments();
+        ObservableList<AppointmentViewModel> apptList = FXCollections.observableArrayList();
+        apptList = AppointmentRepository.getAllAppointmentViewModels();
         
         appointmentIdTableColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         titleTableColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         descriptionTableColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         locationTableColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
-        contactTableColumn.setCellValueFactory(new PropertyValueFactory<>("contactId"));
+        contactTableColumn.setCellValueFactory(new PropertyValueFactory<>("contact"));
         typeTableColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         startDateTimeTableColumn.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
         endDateTimeTableColumn.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
         customerIdTableColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        
+        appointmentTableView.setItems(apptList);
         
     }
     
@@ -107,7 +111,12 @@ public class AppointmentTableViewScreenController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        try {
+            // TODO
+            updateTable();
+        } catch (SQLException ex) {
+            Logger.getLogger(AppointmentTableViewScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }    
     
 }
