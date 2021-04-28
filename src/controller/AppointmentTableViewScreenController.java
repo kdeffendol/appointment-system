@@ -45,6 +45,7 @@ public class AppointmentTableViewScreenController implements Initializable {
     @FXML TableColumn typeTableColumn;
     @FXML TableColumn startDateTimeTableColumn;
     @FXML TableColumn endDateTimeTableColumn;
+    @FXML TableColumn customerIdTableColumn;
     
     @FXML RadioButton monthViewRadioButton;
     @FXML RadioButton weekViewRadioButton;
@@ -88,7 +89,16 @@ public class AppointmentTableViewScreenController implements Initializable {
         ObservableList<Appointment> apptList = FXCollections.observableArrayList();
         apptList = AppointmentRepository.getAllAppointments();
         
-        customerIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        appointmentIdTableColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        titleTableColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        descriptionTableColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        locationTableColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
+        contactTableColumn.setCellValueFactory(new PropertyValueFactory<>("contactId"));
+        typeTableColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        startDateTimeTableColumn.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
+        endDateTimeTableColumn.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
+        customerIdTableColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        
     }
     
     /**
