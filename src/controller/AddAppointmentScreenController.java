@@ -119,10 +119,7 @@ public class AddAppointmentScreenController implements Initializable {
         appt.setLastUpdatedBy("test"); //ALSO BAD PLS CHANGE
         
         //add appointment to database
-        AppointmentRepository.addAppointment(appt);
-        
-        
-        
+        AppointmentRepository.addAppointment(appt); 
     }
     
     public int getContactNameSelection() throws Exception {
