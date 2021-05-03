@@ -77,6 +77,11 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
+                  <TextField fx:id="startDateTimeTextField" prefHeight="45.0" prefWidth="248.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
                </children>
             </HBox>
             <HBox prefHeight="50.0" prefWidth="408.0">
@@ -86,6 +91,11 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
+                  <TextField fx:id="endDateTimeTextField" prefHeight="45.0" prefWidth="248.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
                </children>
             </HBox>
             <HBox prefHeight="50.0" prefWidth="408.0">
