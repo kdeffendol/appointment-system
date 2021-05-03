@@ -62,6 +62,7 @@ public class AppointmentTableViewScreenController implements Initializable {
         Parent addAppointmentPage = FXMLLoader.load(getClass().getResource("/view/AddAppointmentScreen.fxml")); //add in add appointment file
         Scene addAppointmentScene = new Scene(addAppointmentPage);
         
+        
         //this line gets the stage information
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         
@@ -69,8 +70,40 @@ public class AppointmentTableViewScreenController implements Initializable {
         window.show();
     }
     
-    public void updateAppointmentButtonPushed(ActionEvent event) throws IOException {
+    public void updateAppointmentButtonPushed(ActionEvent event) throws IOException, Exception {
+        //FXMLLoader loader = FXMLLoader.load(getClass().getResource("/view/ModifyAppointmentScreen.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ModifyAppointmentScreen.fxml"));
+        Parent updateAppointmentPage = loader.load(); //add in modify appointment file
+        Scene updateAppointmentScene = new Scene(updateAppointmentPage);
         
+        ModifyAppointmentScreenController controller = loader.getController();
+        
+        //get id of selected combo box
+        AppointmentViewModel selectedAppt = appointmentTableView.getSelectionModel().getSelectedItem();
+        controller.initalizeTextFields(selectedAppt.getCustomerId());
+        
+        //this line gets the stage information
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        
+        window.setScene(updateAppointmentScene);
+        window.show();
+        
+        
+        /*
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ModifyPartScreen.fxml"));
+        Parent partPage = loader.load();
+        
+        Scene partScene = new Scene(partPage);
+        
+        ModifyPartScreenController modifyPartScreenController = loader.getController();
+        modifyPartScreenController.setPartInfo(partTableView.getSelectionModel().getSelectedItem());
+        
+        //this line gets the stage information
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        
+        window.setScene(partScene);
+        window.show();
+        */
     }
     
     public void deleteAppointmentButtonPushed(ActionEvent event) throws IOException {

@@ -115,7 +115,7 @@ public class AppointmentRepository {
     public static Appointment getAppointmentByAppointmentId(int appointmentId) throws SQLException, Exception {
         Connection conn = DBConnection.startConnection(); 
         
-        String selectStatement = "SELECT * FROM appointment WHERE Appointment_ID = ?";
+        String selectStatement = "SELECT * FROM appointments WHERE Appointment_ID = ?";
         
         DBQuery.setPreparedStatement(conn, selectStatement); //create prepared statement       
         PreparedStatement ps = DBQuery.getPreparedStatement();

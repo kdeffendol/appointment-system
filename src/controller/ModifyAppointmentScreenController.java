@@ -19,6 +19,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.Appointment;
+import repos.AppointmentRepository;
 
 /**
  * FXML Controller class
@@ -56,6 +58,21 @@ public class ModifyAppointmentScreenController implements Initializable {
     public void saveButtonPushed(ActionEvent event) throws IOException {
         //save modified appointment back into database
         //go back to AppointmentTableViewScreen
+    }
+    
+    public void initalizeTextFields(int id) throws Exception {
+        //find appointment from id
+        Appointment appt = AppointmentRepository.getAppointmentByAppointmentId(id);
+        
+        //populate fields from appointment data
+        appointmentIdTextField.setText(String.valueOf(appt.getAppointmentId()));
+        titleTextField.setText(appt.getTitle());
+        descriptionTextField.setText(appt.getDescription());
+        locationTextField.setText(appt.getLocation());
+        customerIdTextField.setText(String.valueOf(appt.getCustomerId()));
+        userIdTextField.setText(String.valueOf(appt.getUserId()));
+        //contactNameComboBox.setValue(appt.getC);   
+        
     }
     
     /**
