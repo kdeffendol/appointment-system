@@ -78,10 +78,20 @@ public class CustomerTableViewScreenController implements Initializable {
         //pass in data of selected Customer
     }
     
+    /**
+     * Deletes the selected customer from the database when the Delete button is pressed
+     * @param event
+     * @throws IOException 
+     */
     public void deleteCustomerButtonPushed(ActionEvent event) throws IOException {
         //delete customer from database
     }
     
+    /**
+     * Returns user to the MainScreen scene
+     * @param event
+     * @throws IOException 
+     */
     public void backButtonPushed(ActionEvent event) throws IOException {
         Parent mainPage = FXMLLoader.load(getClass().getResource("/view/MainScreen.fxml"));
         Scene mainScene = new Scene(mainPage);
@@ -93,6 +103,14 @@ public class CustomerTableViewScreenController implements Initializable {
         window.show();
     }
     
+    
+    //OTHER FUNCTIONS-------------------------------------------------------------
+    
+    
+    /**
+     * Updates TableView with the database items
+     * @throws SQLException 
+     */
     public void updateTable() throws SQLException {
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
         customerList = CustomerRepository.getAllCustomers();

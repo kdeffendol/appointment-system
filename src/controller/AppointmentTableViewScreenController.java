@@ -31,9 +31,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
 import model.AppointmentViewModel;
-import model.Customer;
 import repos.AppointmentRepository;
-import repos.CustomerRepository;
 
 /**
  * FXML Controller class
@@ -61,6 +59,11 @@ public class AppointmentTableViewScreenController implements Initializable {
     @FXML Button deleteAppointmentButton;
     @FXML Button backButton;
     
+    /**
+     * Changes scene to the "AddAppointmentScreen"
+     * @param event
+     * @throws IOException 
+     */
     public void addAppointmentButtonPushed(ActionEvent event) throws IOException {
         Parent addAppointmentPage = FXMLLoader.load(getClass().getResource("/view/AddAppointmentScreen.fxml")); //add in add appointment file
         Scene addAppointmentScene = new Scene(addAppointmentPage);
@@ -73,6 +76,12 @@ public class AppointmentTableViewScreenController implements Initializable {
         window.show();
     }
     
+    /**
+     * Uses selected row and populates the UpdateAppointmentScreen with the data while switching the scene
+     * @param event
+     * @throws IOException
+     * @throws Exception 
+     */
     public void updateAppointmentButtonPushed(ActionEvent event) throws IOException, Exception {
         //FXMLLoader loader = FXMLLoader.load(getClass().getResource("/view/ModifyAppointmentScreen.fxml"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ModifyAppointmentScreen.fxml"));
@@ -93,6 +102,12 @@ public class AppointmentTableViewScreenController implements Initializable {
         
     }
     
+    /**
+     * Deletes the selected appointment from the database
+     * @param event
+     * @throws IOException
+     * @throws SQLException 
+     */
     public void deleteAppointmentButtonPushed(ActionEvent event) throws IOException, SQLException {
         //confirmation message
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, 
@@ -112,6 +127,11 @@ public class AppointmentTableViewScreenController implements Initializable {
         updateTable();
     }
     
+    /**
+     * Returns the user to the MainScreen
+     * @param event
+     * @throws IOException 
+     */
     public void backButtonPushed(ActionEvent event) throws IOException {
         Parent mainPage = FXMLLoader.load(getClass().getResource("/view/MainScreen.fxml"));
         Scene mainScene = new Scene(mainPage);
@@ -123,6 +143,10 @@ public class AppointmentTableViewScreenController implements Initializable {
         window.show();
     }
     
+    /**
+     * Updates TableView with the current database
+     * @throws SQLException 
+     */
     public void updateTable() throws SQLException {
         ObservableList<AppointmentViewModel> apptList = FXCollections.observableArrayList();
         apptList = AppointmentRepository.getAllAppointmentViewModels();
