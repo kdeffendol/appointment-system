@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,7 +21,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -88,26 +91,25 @@ public class AppointmentTableViewScreenController implements Initializable {
         window.setScene(updateAppointmentScene);
         window.show();
         
-        
-        /*
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("ModifyPartScreen.fxml"));
-        Parent partPage = loader.load();
-        
-        Scene partScene = new Scene(partPage);
-        
-        ModifyPartScreenController modifyPartScreenController = loader.getController();
-        modifyPartScreenController.setPartInfo(partTableView.getSelectionModel().getSelectedItem());
-        
-        //this line gets the stage information
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        
-        window.setScene(partScene);
-        window.show();
-        */
     }
     
-    public void deleteAppointmentButtonPushed(ActionEvent event) throws IOException {
+    public void deleteAppointmentButtonPushed(ActionEvent event) throws IOException, SQLException {
+        //confirmation message
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, 
+            "Are you sure you want to delete this appointment?", 
+            ButtonType.YES, 
+            ButtonType.NO);
         
+        alert.showAndWait();
+        if (alert.getResult() == ButtonType.YES) {
+           //get appt to delete
+           AppointmentViewModel apptToBeDeleted = appointmentTableView.getSelectionModel().getSelectedItem();
+           
+           //delete appointment with matching id
+           AppointmentRepository.deleteAppointment(apptToBeDeleted.getId());
+        }  
+        //update table
+        updateTable();
     }
     
     public void backButtonPushed(ActionEvent event) throws IOException {
