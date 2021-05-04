@@ -8,9 +8,14 @@ package controller;
 import java.io.IOException;
 import static java.lang.Integer.parseInt;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -103,6 +108,7 @@ public class ModifyAppointmentScreenController implements Initializable {
         //create appointment object w/ the existing appointment id
         Appointment appt = new Appointment();
         //grab data from textfields
+        appt.setAppointmentId(parseInt(appointmentIdTextField.getText()));
         appt.setTitle(titleTextField.getText());
         appt.setDescription(descriptionTextField.getText());
         appt.setLocation(locationTextField.getText());
@@ -153,12 +159,31 @@ public class ModifyAppointmentScreenController implements Initializable {
         return contactId;
     }
     
+    public void populateContactNamesComboBox() throws SQLException {
+        ObservableList<Contact> contacts = FXCollections.observableArrayList();
+        ObservableList<String> contactNames = FXCollections.observableArrayList();
+        
+        contacts = ContactRepository.getAllContacts();
+        
+        //loop thru contact objects to get names
+        for (Contact c : contacts) {
+            contactNames.add(c.getName());
+        }
+        
+        //populate combo box
+        contactNameComboBox.setItems(contactNames);
+    }
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        try {
+            populateContactNamesComboBox();
+        } catch (SQLException ex) {
+            Logger.getLogger(ModifyAppointmentScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }    
     
 }

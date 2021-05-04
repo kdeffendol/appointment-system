@@ -102,6 +102,7 @@ public class AppointmentRepository {
         ps.setInt(12, appt.getAppointmentId());
         
         ps.execute();
+        System.out.println("Appointment has been updated.");
     }
     
     
