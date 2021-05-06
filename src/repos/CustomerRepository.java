@@ -57,7 +57,7 @@ public class CustomerRepository {
     public static void deleteCustomer(int customerId) throws SQLException {
         Connection conn = DBConnection.startConnection();
         
-        String deleteStatement = "DELETE FROM customer WHERE Customer_ID = ?";
+        String deleteStatement = "DELETE FROM customers WHERE Customer_ID = ?";
         
         DBQuery.setPreparedStatement(conn, deleteStatement);
         PreparedStatement ps = DBQuery.getPreparedStatement();

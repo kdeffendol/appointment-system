@@ -101,10 +101,10 @@ public class CustomerTableViewScreenController implements Initializable {
         
         alert.showAndWait();
         if (alert.getResult() == ButtonType.YES) {
-           //get appt to delete
+           //get customer to delete
            Customer customerToBeDeleted = customerTableView.getSelectionModel().getSelectedItem();
            
-           //delete appointment with matching id
+           //delete customer with matching id
            CustomerRepository.deleteCustomer(customerToBeDeleted.getId());
         }  
         //update table
