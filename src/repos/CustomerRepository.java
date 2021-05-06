@@ -121,7 +121,7 @@ public class CustomerRepository {
                 
         //mapping
         int id = rs.getInt("Customer_ID");
-        String name = rs.getString("Name");
+        String name = rs.getString("Customer_Name");
         String address = rs.getString("Address");
         String postalCode = rs.getString("Postal_Code");
         String phone = rs.getString("Phone");

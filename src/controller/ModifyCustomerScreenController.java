@@ -6,8 +6,14 @@
 package controller;
 
 import java.io.IOException;
+import static java.lang.Integer.parseInt;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,8 +25,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.Country;
 import model.Customer;
 import model.FirstLevelDivision;
+import repos.CountryRepository;
 import repos.CustomerRepository;
 import repos.FirstLevelDivRepository;
 
@@ -91,6 +99,7 @@ public class ModifyCustomerScreenController implements Initializable {
     public void updateCustomer() throws Exception {
         Customer customer = new Customer();
         
+        customer.setId(parseInt(customerIdTextField.getText()));
         customer.setName(nameTextField.getText());
         customer.setAddress(addressTextField.getText());
         customer.setPostalCode(postalCodeTextField.getText());
@@ -100,6 +109,45 @@ public class ModifyCustomerScreenController implements Initializable {
         customer.setLastUpdatedBy("test"); //ALSO BAD PLS CHANGE
         
         CustomerRepository.updateCustomer(customer);
+    }
+    
+    /**
+     * Populates the CountryComboBox using country data from the Countries table
+     * @throws SQLException 
+     */
+    public void populateCountryComboBox() throws SQLException {
+        //get all countries from database
+        ObservableList<String> countryNames = FXCollections.observableArrayList();
+        ObservableList<Country> countries = FXCollections.observableArrayList();
+        
+        countries = CountryRepository.getAllCountries();
+        
+        //loop thru countries list and get names
+        for (Country c : countries) {
+            countryNames.add(c.getCountryName());
+        }
+        
+        countryComboBox.setItems(countryNames);
+    }
+    
+    /**
+     * Populates the FirstLevelDivision ComboBox using first-level division data from the First-Level Divisions table.
+     * It will only populate the table with Divisions with the given countryId.
+     * @param countryId
+     * @throws Exception 
+     */
+    public void populateFirstDivisionComboBox(int countryId) throws Exception {
+        ObservableList<FirstLevelDivision> divisions = FXCollections.observableArrayList();
+        ObservableList<String> divisionNames = FXCollections.observableArrayList();
+        
+        //get divisions with matching country id
+        divisions = FirstLevelDivRepository.getDivisionsbyCountryId(countryId);
+        
+        for (FirstLevelDivision c : divisions) {
+            divisionNames.add(c.getName());
+        }
+        
+        firstDivisionComboBox.setItems(divisionNames);
     }
     
     /**
@@ -115,13 +163,35 @@ public class ModifyCustomerScreenController implements Initializable {
         
         return divId;
     }
+    
+    /**
+     * Populates the first-division ComboBox after country is selected in Country ComboBox.
+     * @throws Exception 
+     */
+    public void firstDivisionComboBoxClicked() throws Exception {
+        //check country selected
+        if (countryComboBox.getValue() != null) {
+            String selectedCountry = countryComboBox.getValue().toString();
+            
+            Country selectedCountryObject = CountryRepository.getCountryByCountryName(selectedCountry);
+            
+            int selectedCountryId = selectedCountryObject.getId();
+            
+            populateFirstDivisionComboBox(selectedCountryId);
+        }   
+    }
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        try {
+            // TODO
+            populateCountryComboBox();
+        } catch (SQLException ex) {
+            Logger.getLogger(ModifyCustomerScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }    
     
 }
