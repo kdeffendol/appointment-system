@@ -92,7 +92,7 @@ public class AppointmentTableViewScreenController implements Initializable {
         
         //get id of selected combo box
         AppointmentViewModel selectedAppt = appointmentTableView.getSelectionModel().getSelectedItem();
-        controller.initalizeTextFields(selectedAppt.getCustomerId());
+        controller.initializeTextFields(selectedAppt.getCustomerId());
         
         //this line gets the stage information
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();

@@ -82,7 +82,7 @@ public class ModifyAppointmentScreenController implements Initializable {
         window.show();
     }
     
-    public void initalizeTextFields(int id) throws Exception {
+    public void initializeTextFields(int id) throws Exception {
         //find appointment from id
         Appointment appt = AppointmentRepository.getAppointmentByAppointmentId(id);
         
@@ -93,7 +93,6 @@ public class ModifyAppointmentScreenController implements Initializable {
         locationTextField.setText(appt.getLocation());
         typeTextField.setText(appt.getType());
         
-        //TODO: fix formatting
         startDateTimeTextField.setText(formatDateTime(appt.getStartTime()));
         endDateTimeTextField.setText(formatDateTime(appt.getEndTime()));
         

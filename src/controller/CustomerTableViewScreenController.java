@@ -20,7 +20,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -65,17 +67,22 @@ public class CustomerTableViewScreenController implements Initializable {
         window.show();
     }
     
-    public void updateCustomerButtonPushed(ActionEvent event) throws IOException {
-        Parent modifyCustomerPage = FXMLLoader.load(getClass().getResource("/view/ModifyCustomerScreen.fxml"));
-        Scene modifyCustomerScene = new Scene(modifyCustomerPage);
+    public void updateCustomerButtonPushed(ActionEvent event) throws IOException, Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ModifyCustomerScreen.fxml"));
+        Parent updateCustomerPage = loader.load(); //add in modify appointment file
+        Scene updateCustomerScene = new Scene(updateCustomerPage);
+        
+        ModifyCustomerScreenController controller = loader.getController();
+        
+        //get id of selected combo box
+        Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
+        controller.initializeTextFields(selectedCustomer.getId());
         
         //this line gets the stage information
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         
-        window.setScene(modifyCustomerScene);
+        window.setScene(updateCustomerScene);
         window.show();
-        
-        //pass in data of selected Customer
     }
     
     /**
@@ -83,8 +90,25 @@ public class CustomerTableViewScreenController implements Initializable {
      * @param event
      * @throws IOException 
      */
-    public void deleteCustomerButtonPushed(ActionEvent event) throws IOException {
-        //delete customer from database
+    public void deleteCustomerButtonPushed(ActionEvent event) throws IOException, SQLException {
+        //check if customer has any appointments
+
+        //confirmation message
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, 
+            "Are you sure you want to delete this customer?", 
+            ButtonType.YES, 
+            ButtonType.NO);
+        
+        alert.showAndWait();
+        if (alert.getResult() == ButtonType.YES) {
+           //get appt to delete
+           Customer customerToBeDeleted = customerTableView.getSelectionModel().getSelectedItem();
+           
+           //delete appointment with matching id
+           CustomerRepository.deleteCustomer(customerToBeDeleted.getId());
+        }  
+        //update table
+        updateTable();
     }
     
     /**
@@ -127,7 +151,6 @@ public class CustomerTableViewScreenController implements Initializable {
         customerTableView.setItems(customerList);
    
     }
-    
     
 
     /**
