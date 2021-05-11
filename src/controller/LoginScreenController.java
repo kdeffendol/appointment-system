@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,6 +31,10 @@ public class LoginScreenController implements Initializable {
     @FXML PasswordField passwordField;
     @FXML Label zoneIdTextField;
     @FXML Button loginButton;
+    
+    @FXML Label usernameLabel;
+    @FXML Label passwordLabel;
+    @FXML Label zoneIdLabel;
     
     public void loginButtonPressed(ActionEvent event) throws IOException {
         
@@ -64,7 +69,6 @@ public class LoginScreenController implements Initializable {
             
             //check if password is correct
             if (user.getPassword().equals(passwordField.getText())) {
-                System.out.println("Hello there");
                 isValid = true;
             }
         }
@@ -80,7 +84,13 @@ public class LoginScreenController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        //Language translation
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("language_files/rb", Locale.getDefault());
+        
+        usernameLabel.setText(resourceBundle.getString("username"));
+        passwordLabel.setText(resourceBundle.getString("password"));
+        loginButton.setText(resourceBundle.getString("login"));
+
     }    
     
 }
