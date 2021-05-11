@@ -46,7 +46,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label fx:id="zoneIdTextField" prefHeight="48.0" prefWidth="148.0" />
+            <Label fx:id="zoneIdLabel" prefHeight="48.0" prefWidth="148.0" />
          </children>
       </HBox>
       <Button fx:id="loginButton" layoutX="227.0" layoutY="341.0" mnemonicParsing="false" onAction="#loginButtonPressed" prefHeight="35.0" prefWidth="147.0" text="Login">

@@ -2,6 +2,8 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.ZoneId;
+import java.time.format.TextStyle;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -90,7 +92,8 @@ public class LoginScreenController implements Initializable {
         usernameLabel.setText(resourceBundle.getString("username"));
         passwordLabel.setText(resourceBundle.getString("password"));
         loginButton.setText(resourceBundle.getString("login"));
-
+        String zoneId = ZoneId.systemDefault().getDisplayName(TextStyle.FULL, Locale.getDefault());
+        zoneIdLabel.setText(zoneId);
     }    
     
 }
