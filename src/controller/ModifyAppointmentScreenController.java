@@ -58,6 +58,11 @@ public class ModifyAppointmentScreenController implements Initializable {
     @FXML Button cancelButton;
 
     
+    /**
+     * Returns user to the AppointmentTableViewScreen
+     * @param event
+     * @throws IOException 
+     */
     public void cancelButtonPushed(ActionEvent event) throws IOException {
         //add confirmation message?
         
@@ -99,7 +104,11 @@ public class ModifyAppointmentScreenController implements Initializable {
             window.show();
         }
     }
-    
+    /**
+     * Fills the text fields with the information from the database
+     * @param id
+     * @throws Exception 
+     */
     public void initializeTextFields(int id) throws Exception {
         //find appointment from id
         Appointment appt = AppointmentRepository.getAppointmentByAppointmentId(id);
@@ -121,6 +130,10 @@ public class ModifyAppointmentScreenController implements Initializable {
         
     }
     
+    /**
+     * Updates the appointment in the database with the information from the text fields
+     * @throws Exception 
+     */
     public void updateAppointment() throws Exception {
         //create appointment object w/ the existing appointment id
         Appointment appt = new Appointment();
@@ -156,6 +169,11 @@ public class ModifyAppointmentScreenController implements Initializable {
         AppointmentRepository.updateAppointment(appt);
     }
     
+    /**
+     * Format the DateTime to take out the 'T'
+     * @param oldDateTime
+     * @return string of the LocalDateTime without the T to separate
+     */
     public String formatDateTime(LocalDateTime oldDateTime) {
         String oldDateTimeString = oldDateTime.toString();
         String newDateTimeString;
@@ -168,7 +186,11 @@ public class ModifyAppointmentScreenController implements Initializable {
         
     }
     
-    
+    /**
+     * Converts the dateTime to be in UTC
+     * @param dateTime
+     * @return LocalDateTime in UTC
+     */
     public LocalDateTime convertTimeToUTC(LocalDateTime dateTime) {
        //change to user's local time zone
        ZonedDateTime zonedDateTime = dateTime.atZone(ZoneId.systemDefault());
@@ -179,6 +201,11 @@ public class ModifyAppointmentScreenController implements Initializable {
        return zonedDateTime.toLocalDateTime();
     }
     
+    /**
+     * converts the LocalDateTime into the user's local timezone
+     * @param dateTime
+     * @return LocalDateTime in the user's local timezone
+     */
     public LocalDateTime convertUTCToLocalTime(LocalDateTime dateTime) {
         //put in utc time
         ZonedDateTime zonedDateTime = dateTime.atZone(ZoneOffset.UTC);
@@ -189,6 +216,11 @@ public class ModifyAppointmentScreenController implements Initializable {
         return zonedDateTime.toLocalDateTime();
     }
     
+    /**
+     * Checks if given time is within business hours
+     * @param dateTime
+     * @return 
+     */
     public boolean isInBusinessHours(LocalDateTime dateTime) {
         //add time zone to local
         ZonedDateTime zonedDateTime = dateTime.atZone(ZoneId.systemDefault());
@@ -203,6 +235,11 @@ public class ModifyAppointmentScreenController implements Initializable {
         
     }
     
+    /**
+     * Alerts the user if start time or end time is not within the business hours
+     * @param startDateTime
+     * @param endDateTime 
+     */
     public void checkIfTimesInBusinessHours(LocalDateTime startDateTime, LocalDateTime endDateTime) {
         if (isInBusinessHours(startDateTime) == false || isInBusinessHours(endDateTime) == false) {
              Alert alert = new Alert(Alert.AlertType.INFORMATION, 
@@ -212,7 +249,11 @@ public class ModifyAppointmentScreenController implements Initializable {
         }
     }
     
-    
+    /**
+     * Gets the contact name from database by the ID
+     * @return
+     * @throws Exception 
+     */
     public int getContactNameSelection() throws Exception {
         Contact contact = ContactRepository.getContactByContactName(contactNameComboBox.getValue().toString());
         
@@ -221,6 +262,10 @@ public class ModifyAppointmentScreenController implements Initializable {
         return contactId;
     }
     
+    /**
+     * Populates the ContactNamesComboBox with Contacts from the database
+     * @throws SQLException 
+     */
     public void populateContactNamesComboBox() throws SQLException {
         ObservableList<Contact> contacts = FXCollections.observableArrayList();
         ObservableList<String> contactNames = FXCollections.observableArrayList();

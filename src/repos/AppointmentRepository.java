@@ -10,6 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
@@ -228,7 +231,11 @@ public class AppointmentRepository {
             String contact = rs.getString("Contact_Name");
             String type = rs.getString("Type");
             LocalDateTime startTime = rs.getTimestamp("Start").toLocalDateTime();
+            startTime = convertUTCToLocalTime(startTime);
+            
             LocalDateTime endTime = rs.getTimestamp("End").toLocalDateTime();
+            endTime = convertUTCToLocalTime(endTime);
+            
             int customerId = rs.getInt("Customer_ID");
             
             AppointmentViewModel appt = new AppointmentViewModel(id, title, description, location, contact, type, startTime, endTime, customerId);
@@ -238,5 +245,20 @@ public class AppointmentRepository {
         
         return appointments;
         
+    }
+    
+    /**
+     * converts the LocalDateTime into the user's local timezone
+     * @param dateTime
+     * @return LocalDateTime in the user's local timezone
+     */
+    public static LocalDateTime convertUTCToLocalTime(LocalDateTime dateTime) {
+        //put in utc time
+        ZonedDateTime zonedDateTime = dateTime.atZone(ZoneOffset.UTC);
+        
+        //convert to local time
+        zonedDateTime = zonedDateTime.withZoneSameInstant(ZoneId.systemDefault());
+        
+        return zonedDateTime.toLocalDateTime();
     }
 }
