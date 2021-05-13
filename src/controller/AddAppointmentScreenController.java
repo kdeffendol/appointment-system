@@ -26,14 +26,18 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Appointment;
 import model.Contact;
+import model.Customer;
 import repos.AppointmentRepository;
 import repos.ContactRepository;
+import repos.CustomerRepository;
 
 /**
  * FXML Controller class
@@ -76,18 +80,32 @@ public class AddAppointmentScreenController implements Initializable {
     }
     
     public void saveButtonPushed(ActionEvent event) throws IOException, SQLException, Exception {
-        //save appointment into database
-        createNewAppointment();
+        String str = startDateTimeTextField.getText();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime startDateTime = LocalDateTime.parse(str, formatter);
         
-        //go back to AppointmentTableViewScreen
-        Parent mainPage = FXMLLoader.load(getClass().getResource("/view/AppointmentTableViewScreen.fxml"));
-        Scene mainScene = new Scene(mainPage);
+        str = endDateTimeTextField.getText();
+        LocalDateTime endDateTime = LocalDateTime.parse(str, formatter);
         
-        //this line gets the stage information
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        if (isInBusinessHours(startDateTime) == false || isInBusinessHours(endDateTime) == false) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, 
+                "Appointment time is outside of business hours, try again.");
+             
+             alert.showAndWait();
+        } else {
+            //save appointment into database
+            createNewAppointment();
         
-        window.setScene(mainScene);
-        window.show();
+            //go back to AppointmentTableViewScreen
+            Parent mainPage = FXMLLoader.load(getClass().getResource("/view/AppointmentTableViewScreen.fxml"));
+            Scene mainScene = new Scene(mainPage);
+        
+            //this line gets the stage information
+            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        
+            window.setScene(mainScene);
+            window.show();
+        }
     }
     
     public void createNewAppointment() throws SQLException, Exception {
@@ -105,13 +123,13 @@ public class AddAppointmentScreenController implements Initializable {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
         
-        appt.setStartTime(dateTime);
+        appt.setStartTime(convertTimeToUTC(dateTime));
         
         //convert end date string to LocalDateTime
         str = endDateTimeTextField.getText();
         dateTime = LocalDateTime.parse(str, formatter);
         
-        appt.setEndTime(dateTime);
+        appt.setEndTime(convertTimeToUTC(dateTime));
         
         appt.setCustomerId(parseInt(customerIdTextField.getText()));
         appt.setUserId(parseInt(userIdTextField.getText()));
@@ -121,8 +139,10 @@ public class AddAppointmentScreenController implements Initializable {
         appt.setCreatedBy("test"); //BAD PLS CHANGE
         appt.setLastUpdatedBy("test"); //ALSO BAD PLS CHANGE
         
+        
+        
         //add appointment to database
-        AppointmentRepository.addAppointment(appt); 
+        AppointmentRepository.addAppointment(appt);
     }
     
     public LocalDateTime convertTimeToUTC(LocalDateTime dateTime) {
@@ -150,13 +170,22 @@ public class AddAppointmentScreenController implements Initializable {
         ZonedDateTime zonedDateTime = dateTime.atZone(ZoneId.systemDefault());
         
         //move to eastern time
-        zonedDateTime = zonedDateTime.withZoneSameInstant(ZoneId.of("EST"));
+        zonedDateTime = zonedDateTime.withZoneSameInstant(ZoneId.of("US/Eastern"));
         
         int hour = zonedDateTime.getHour();
         
         //check if time is in business hours
         return hour >= 8 && hour < 22;
         
+    }
+    
+    public void checkIfTimesInBusinessHours(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        if (isInBusinessHours(startDateTime) == false || isInBusinessHours(endDateTime) == false) {
+             Alert alert = new Alert(Alert.AlertType.INFORMATION, 
+                "Appointment time is outside of business hours, try again.");
+             
+             alert.showAndWait();
+        }
     }
     
     public int getContactNameSelection() throws Exception {
