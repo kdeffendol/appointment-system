@@ -10,6 +10,9 @@ import static java.lang.Integer.parseInt;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -120,6 +123,40 @@ public class AddAppointmentScreenController implements Initializable {
         
         //add appointment to database
         AppointmentRepository.addAppointment(appt); 
+    }
+    
+    public LocalDateTime convertTimeToUTC(LocalDateTime dateTime) {
+       //change to user's local time zone
+       ZonedDateTime zonedDateTime = dateTime.atZone(ZoneId.systemDefault());
+       
+       //convert to utc
+       zonedDateTime = zonedDateTime.withZoneSameInstant(ZoneOffset.UTC);
+       
+       return zonedDateTime.toLocalDateTime();
+    }
+    
+    public LocalDateTime convertUTCToLocalTime(LocalDateTime dateTime) {
+        //put in utc time
+        ZonedDateTime zonedDateTime = dateTime.atZone(ZoneOffset.UTC);
+        
+        //convert to local time
+        zonedDateTime = zonedDateTime.withZoneSameInstant(ZoneId.systemDefault());
+        
+        return zonedDateTime.toLocalDateTime();
+    }
+    
+    public boolean isInBusinessHours(LocalDateTime dateTime) {
+        //add time zone to local
+        ZonedDateTime zonedDateTime = dateTime.atZone(ZoneId.systemDefault());
+        
+        //move to eastern time
+        zonedDateTime = zonedDateTime.withZoneSameInstant(ZoneId.of("EST"));
+        
+        int hour = zonedDateTime.getHour();
+        
+        //check if time is in business hours
+        return hour >= 8 && hour < 22;
+        
     }
     
     public int getContactNameSelection() throws Exception {
