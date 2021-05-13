@@ -8,9 +8,11 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -141,6 +143,11 @@ public class AppointmentTableViewScreenController implements Initializable {
         
         window.setScene(mainScene);
         window.show();
+    }
+   
+    
+    public void filterTableByMonth() {
+        //TODO
     }
     
     /**

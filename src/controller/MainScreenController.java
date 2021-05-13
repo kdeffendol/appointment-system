@@ -66,6 +66,17 @@ public class MainScreenController implements Initializable {
         window.show();
     }
     
+    public void reportsButtonPushed(ActionEvent event) throws IOException {
+        Parent appointmentsPage = FXMLLoader.load(getClass().getResource("/view/ReportsScreen.fxml"));
+        Scene appointmentsScene = new Scene(appointmentsPage);
+        
+        //this line gets the stage information
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        
+        window.setScene(appointmentsScene);
+        window.show();
+    }
+    
     /**
      * 
      * @param event
