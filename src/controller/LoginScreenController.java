@@ -1,7 +1,8 @@
 package controller;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
+import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.TextStyle;
 import java.util.Locale;
@@ -39,6 +40,7 @@ public class LoginScreenController implements Initializable {
     @FXML Label zoneIdLabel;
     
     public void loginButtonPressed(ActionEvent event) throws IOException {
+        appendLoginActivityReport();
         
         if (checkLoginValidation() == true) {
             Parent mainPage = FXMLLoader.load(getClass().getResource("/view/MainScreen.fxml"));
@@ -79,6 +81,17 @@ public class LoginScreenController implements Initializable {
         }
         
         return isValid;
+    }
+    
+    public void appendLoginActivityReport() throws IOException {
+        String filename = "login_activity.txt";
+        
+        FileWriter fw = new FileWriter(filename, true);
+        PrintWriter outputFile = new PrintWriter(fw);
+        
+        outputFile.println(usernameTextField.getText() + " | " + Instant.now() + " | " + checkLoginValidation());
+        
+        outputFile.close();
     }
 
     /**
