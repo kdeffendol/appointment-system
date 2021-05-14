@@ -9,9 +9,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -29,6 +31,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
@@ -53,6 +56,7 @@ public class AppointmentTableViewScreenController implements Initializable {
     @FXML TableColumn <AppointmentViewModel, String>endDateTimeTableColumn;
     @FXML TableColumn <AppointmentViewModel, String>customerIdTableColumn;
     
+    @FXML private ToggleGroup radioButtons;
     @FXML RadioButton monthViewRadioButton;
     @FXML RadioButton weekViewRadioButton;
     
@@ -60,6 +64,19 @@ public class AppointmentTableViewScreenController implements Initializable {
     @FXML Button updateAppointmentButton;
     @FXML Button deleteAppointmentButton;
     @FXML Button backButton;
+    
+    private ObservableList<AppointmentViewModel> apptList = FXCollections.observableArrayList();;
+    
+    
+    public void resetButtonPushed(ActionEvent event) throws IOException, SQLException {
+        resetRadioButtons();
+        updateTable();
+    }
+    
+    public void monthViewRadioButtonPushed(ActionEvent event) throws IOException, SQLException {
+        filterTableByMonth();
+        
+    }
     
     /**
      * Changes scene to the "AddAppointmentScreen"
@@ -145,9 +162,31 @@ public class AppointmentTableViewScreenController implements Initializable {
         window.show();
     }
    
+    /**
+     * Filters the TableView by the current month
+     * @throws SQLException 
+     */
+    public void filterTableByMonth() throws SQLException {
+        List<AppointmentViewModel> appointmentsInCurrentMonth = AppointmentRepository.getAllAppointmentViewModels()
+                .stream()
+                .filter(a -> a.getStartDateTime().getMonth() == LocalDate.now().getMonth())
+                .collect(Collectors.toList());
+        
+        apptList.clear();
+        for (AppointmentViewModel a : appointmentsInCurrentMonth) {
+            apptList.add(a);
+        }
+        
+        appointmentTableView.setItems(apptList);
+    }
     
-    public void filterTableByMonth() {
+    public void filterTableByWeek() {
         //TODO
+    }
+    
+    public void resetRadioButtons() {
+        monthViewRadioButton.setSelected(false);
+        weekViewRadioButton.setSelected(false);
     }
     
     /**
@@ -155,7 +194,6 @@ public class AppointmentTableViewScreenController implements Initializable {
      * @throws SQLException 
      */
     public void updateTable() throws SQLException {
-        ObservableList<AppointmentViewModel> apptList = FXCollections.observableArrayList();
         apptList = AppointmentRepository.getAllAppointmentViewModels();
         
         appointmentIdTableColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -178,7 +216,9 @@ public class AppointmentTableViewScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            // TODO
+            monthViewRadioButton.setToggleGroup(radioButtons);
+            weekViewRadioButton.setToggleGroup(radioButtons);
+            
             updateTable();
         } catch (SQLException ex) {
             Logger.getLogger(AppointmentTableViewScreenController.class.getName()).log(Level.SEVERE, null, ex);
