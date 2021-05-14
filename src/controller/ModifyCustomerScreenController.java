@@ -51,7 +51,7 @@ public class ModifyCustomerScreenController implements Initializable {
     @FXML Button cancelButton;
     
     /**
-     * 
+     * Updates the Customer data in the database and returns user to the CustomerTableViewScreen
      * @param event
      * @throws IOException 
      */
@@ -69,7 +69,7 @@ public class ModifyCustomerScreenController implements Initializable {
     }
     
     /**
-     * 
+     * Returns the user to the CustomerTableViewScreen
      * @param event
      * @throws IOException 
      */
@@ -84,6 +84,11 @@ public class ModifyCustomerScreenController implements Initializable {
         window.show();
     }
     
+    /**
+     * Populates TextFields with the selected Customer's data
+     * @param id
+     * @throws Exception 
+     */
     public void initializeTextFields(int id) throws Exception {
         Customer customer = CustomerRepository.getCustomerByCustomerId(id);
         
@@ -96,6 +101,10 @@ public class ModifyCustomerScreenController implements Initializable {
         
     }
     
+    /**
+     * Updates customer in database with data from TextFields
+     * @throws Exception 
+     */
     public void updateCustomer() throws Exception {
         Customer customer = new Customer();
         

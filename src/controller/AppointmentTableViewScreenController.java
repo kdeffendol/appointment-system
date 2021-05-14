@@ -68,15 +68,33 @@ public class AppointmentTableViewScreenController implements Initializable {
     private ObservableList<AppointmentViewModel> apptList = FXCollections.observableArrayList();
     
     
+    /**
+     * Resets the RadioButtons and sets table to view all Appointments.
+     * @param event
+     * @throws IOException
+     * @throws SQLException 
+     */
     public void resetButtonPushed(ActionEvent event) throws IOException, SQLException {
         resetRadioButtons();
         updateTable();
     }
     
+    /**
+     * Filters the TableView when the RadioButton is clicked.
+     * @param event
+     * @throws IOException
+     * @throws SQLException 
+     */
     public void monthViewRadioButtonPushed(ActionEvent event) throws IOException, SQLException {
         filterTableByMonth();  
     }
     
+    /**
+     * Filters the TableView when the RadioButton is clicked.
+     * @param event
+     * @throws IOException
+     * @throws SQLException 
+     */
     public void weekViewRadioButtonPushed(ActionEvent event) throws IOException, SQLException {
         filterTableByWeek();
     }
@@ -184,7 +202,8 @@ public class AppointmentTableViewScreenController implements Initializable {
     }
     
     /**
-     * 
+     * Filters the table based on the current week
+     * @throws SQLException 
      */
     public void filterTableByWeek() throws SQLException {
         LocalDate currentDay = LocalDate.now();
@@ -203,6 +222,9 @@ public class AppointmentTableViewScreenController implements Initializable {
         appointmentTableView.setItems(apptList);
     }
     
+    /**
+     * Deselects both of the RadioButtons in the ToggleGroup
+     */
     public void resetRadioButtons() {
         monthViewRadioButton.setSelected(false);
         weekViewRadioButton.setSelected(false);

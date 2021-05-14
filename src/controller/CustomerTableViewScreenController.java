@@ -33,7 +33,7 @@ import repos.CustomerRepository;
 /**
  * FXML Controller class
  *
- * @author kelsey
+ * @author Kelsey Deffendol - kdeffen@wgu.edu
  */
 public class CustomerTableViewScreenController implements Initializable {
     
@@ -56,6 +56,11 @@ public class CustomerTableViewScreenController implements Initializable {
     
     //BUTTON FUNCTIONS------------------------------------------------------------
     
+    /**
+     * Takes user to the AddCustomerScreen when the button is pressed.
+     * @param event
+     * @throws IOException 
+     */
     public void addCustomerButtonPushed(ActionEvent event) throws IOException {
         Parent addCustomerPage = FXMLLoader.load(getClass().getResource("/view/AddCustomerScreen.fxml"));
         Scene addCustomerScene = new Scene(addCustomerPage);
@@ -67,6 +72,12 @@ public class CustomerTableViewScreenController implements Initializable {
         window.show();
     }
     
+    /**
+     * Loads the selected Row in the ModifyCustomerScreen and takes the user to the new screen.
+     * @param event
+     * @throws IOException
+     * @throws Exception 
+     */
     public void updateCustomerButtonPushed(ActionEvent event) throws IOException, Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ModifyCustomerScreen.fxml"));
         Parent updateCustomerPage = loader.load(); //add in modify appointment file

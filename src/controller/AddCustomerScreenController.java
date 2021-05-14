@@ -70,7 +70,7 @@ public class AddCustomerScreenController implements Initializable {
     }
     
     /**
-     * 
+     * Returns the user to the CustomerTableViewScreen.
      * @param event
      * @throws IOException 
      */

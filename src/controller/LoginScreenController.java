@@ -39,6 +39,11 @@ public class LoginScreenController implements Initializable {
     @FXML Label passwordLabel;
     @FXML Label zoneIdLabel;
     
+    /**
+     * Checks if user credentials are correct and will login user if they are.
+     * @param event
+     * @throws IOException 
+     */
     public void loginButtonPressed(ActionEvent event) throws IOException {
         appendLoginActivityReport();
         
@@ -60,7 +65,10 @@ public class LoginScreenController implements Initializable {
         }
     }
     
-    
+    /**
+     * Checks if the user's credentials are in the database.
+     * @return 
+     */
     public boolean checkLoginValidation() {
         boolean isValid = false;
         //check if username is in database
@@ -83,6 +91,10 @@ public class LoginScreenController implements Initializable {
         return isValid;
     }
     
+    /**
+     * Adds login attempt information to the text file
+     * @throws IOException 
+     */
     public void appendLoginActivityReport() throws IOException {
         String filename = "login_activity.txt";
         

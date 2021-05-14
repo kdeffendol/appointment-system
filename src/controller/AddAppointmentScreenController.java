@@ -62,7 +62,7 @@ public class AddAppointmentScreenController implements Initializable {
     
     
     /**
-     * 
+     * Changes UI back to the AppointmentTableViewScreen
      * @param event
      * @throws IOException 
      */
@@ -79,6 +79,13 @@ public class AddAppointmentScreenController implements Initializable {
         window.show();
     }
     
+    /**
+     * Saves the appointment and sends user back to the AppointmentTableViewScreen
+     * @param event
+     * @throws IOException
+     * @throws SQLException
+     * @throws Exception 
+     */
     public void saveButtonPushed(ActionEvent event) throws IOException, SQLException, Exception {
         String str = startDateTimeTextField.getText();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -108,6 +115,11 @@ public class AddAppointmentScreenController implements Initializable {
         }
     }
     
+    /**
+     * Creates new appointment with data from TextFields.
+     * @throws SQLException
+     * @throws Exception 
+     */
     public void createNewAppointment() throws SQLException, Exception {
         //create empty appointment
         Appointment appt = new Appointment();
@@ -145,6 +157,11 @@ public class AddAppointmentScreenController implements Initializable {
         AppointmentRepository.addAppointment(appt);
     }
     
+    /**
+     * Converts the given time to UTC
+     * @param dateTime
+     * @return 
+     */
     public LocalDateTime convertTimeToUTC(LocalDateTime dateTime) {
        //change to user's local time zone
        ZonedDateTime zonedDateTime = dateTime.atZone(ZoneId.systemDefault());
@@ -155,6 +172,11 @@ public class AddAppointmentScreenController implements Initializable {
        return zonedDateTime.toLocalDateTime();
     }
     
+    /**
+     * Converts the time given in UTC to the user's local time
+     * @param dateTime
+     * @return 
+     */
     public LocalDateTime convertUTCToLocalTime(LocalDateTime dateTime) {
         //put in utc time
         ZonedDateTime zonedDateTime = dateTime.atZone(ZoneOffset.UTC);
@@ -165,6 +187,11 @@ public class AddAppointmentScreenController implements Initializable {
         return zonedDateTime.toLocalDateTime();
     }
     
+    /**
+     * Checks if the given time is within business hours
+     * @param dateTime
+     * @return 
+     */
     public boolean isInBusinessHours(LocalDateTime dateTime) {
         //add time zone to local
         ZonedDateTime zonedDateTime = dateTime.atZone(ZoneId.systemDefault());
@@ -179,6 +206,11 @@ public class AddAppointmentScreenController implements Initializable {
         
     }
     
+    /**
+     * Alerts the user if the given time is outside of business hours
+     * @param startDateTime
+     * @param endDateTime 
+     */
     public void checkIfTimesInBusinessHours(LocalDateTime startDateTime, LocalDateTime endDateTime) {
         if (isInBusinessHours(startDateTime) == false || isInBusinessHours(endDateTime) == false) {
              Alert alert = new Alert(Alert.AlertType.INFORMATION, 
@@ -188,6 +220,11 @@ public class AddAppointmentScreenController implements Initializable {
         }
     }
     
+    /**
+     * Gets the contact name selection from the combo box.
+     * @return
+     * @throws Exception 
+     */
     public int getContactNameSelection() throws Exception {
         Contact contact = ContactRepository.getContactByContactName(contactNameComboBox.getValue().toString());
         
@@ -196,6 +233,10 @@ public class AddAppointmentScreenController implements Initializable {
         return contactId;
     }
     
+    /**
+     * Populates the contact names ComboBox from the data in the database.
+     * @throws SQLException 
+     */
     public void populateContactNamesComboBox() throws SQLException {
         ObservableList<Contact> contacts = FXCollections.observableArrayList();
         ObservableList<String> contactNames = FXCollections.observableArrayList();

@@ -76,6 +76,12 @@ public class ModifyAppointmentScreenController implements Initializable {
         window.show();
     }
     
+    /**
+     * Saves changes to the Appointment and returns user to the AppointmentTableViewScreen
+     * @param event
+     * @throws IOException
+     * @throws Exception 
+     */
     public void saveButtonPushed(ActionEvent event) throws IOException, Exception {
         String str = startDateTimeTextField.getText();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");

@@ -40,7 +40,7 @@ public class MainScreenController implements Initializable {
     
     
     /**
-     * 
+     * Takes user to the CustomerTableViewScreen when the button is clicked.
      * @param event
      * @throws IOException 
      */
@@ -57,7 +57,7 @@ public class MainScreenController implements Initializable {
     }
     
     /**
-     * 
+     * Takes user to the AppointmentTableViewScreen when button is clicked.
      * @param event
      * @throws IOException 
      */
@@ -72,6 +72,11 @@ public class MainScreenController implements Initializable {
         window.show();
     }
     
+    /**
+     * Takes user to the ReportsScreen when the button is clicked.
+     * @param event
+     * @throws IOException 
+     */
     public void reportsButtonPushed(ActionEvent event) throws IOException {
         Parent appointmentsPage = FXMLLoader.load(getClass().getResource("/view/ReportsScreen.fxml"));
         Scene appointmentsScene = new Scene(appointmentsPage);
@@ -84,7 +89,7 @@ public class MainScreenController implements Initializable {
     }
     
     /**
-     * 
+     * Logs out and closes the program when the button is clicked.
      * @param event
      * @throws IOException 
      */
@@ -100,6 +105,8 @@ public class MainScreenController implements Initializable {
         }  
     }
     
+    
+    //TODO:
     public void checkForUpcomingApppointment() throws SQLException {
         LocalDateTime currentDateTime = LocalDateTime.now();
         ObservableList<Appointment> apptList = FXCollections.observableArrayList();
