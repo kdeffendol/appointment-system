@@ -65,7 +65,7 @@ public class AppointmentTableViewScreenController implements Initializable {
     @FXML Button deleteAppointmentButton;
     @FXML Button backButton;
     
-    private ObservableList<AppointmentViewModel> apptList = FXCollections.observableArrayList();;
+    private ObservableList<AppointmentViewModel> apptList = FXCollections.observableArrayList();
     
     
     public void resetButtonPushed(ActionEvent event) throws IOException, SQLException {
@@ -74,8 +74,11 @@ public class AppointmentTableViewScreenController implements Initializable {
     }
     
     public void monthViewRadioButtonPushed(ActionEvent event) throws IOException, SQLException {
-        filterTableByMonth();
-        
+        filterTableByMonth();  
+    }
+    
+    public void weekViewRadioButtonPushed(ActionEvent event) throws IOException, SQLException {
+        filterTableByWeek();
     }
     
     /**
@@ -169,7 +172,7 @@ public class AppointmentTableViewScreenController implements Initializable {
     public void filterTableByMonth() throws SQLException {
         List<AppointmentViewModel> appointmentsInCurrentMonth = AppointmentRepository.getAllAppointmentViewModels()
                 .stream()
-                .filter(a -> a.getStartDateTime().getMonth() == LocalDate.now().getMonth())
+                .filter(a -> a.getStartDateTime().getMonth() == LocalDate.now().getMonth() && a.getStartDateTime().getYear() == LocalDate.now().getYear())
                 .collect(Collectors.toList());
         
         apptList.clear();
@@ -180,8 +183,24 @@ public class AppointmentTableViewScreenController implements Initializable {
         appointmentTableView.setItems(apptList);
     }
     
-    public void filterTableByWeek() {
-        //TODO
+    /**
+     * 
+     */
+    public void filterTableByWeek() throws SQLException {
+        LocalDate currentDay = LocalDate.now();
+        LocalDate currentPlusWeek = currentDay.plusWeeks(1);
+        
+        List<AppointmentViewModel> appointmentsInCurrentWeek = AppointmentRepository.getAllAppointmentViewModels()
+                .stream()
+                .filter(a -> a.getStartDateTime().toLocalDate().isAfter(currentDay) && a.getStartDateTime().toLocalDate().isBefore(currentPlusWeek))
+                .collect(Collectors.toList());
+        
+        apptList.clear();
+        for (AppointmentViewModel a : appointmentsInCurrentWeek) {
+            apptList.add(a);
+        }
+        
+        appointmentTableView.setItems(apptList);
     }
     
     public void resetRadioButtons() {

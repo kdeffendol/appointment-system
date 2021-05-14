@@ -7,8 +7,12 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +24,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+import model.Appointment;
+import repos.AppointmentRepository;
 
 /**
  * FXML Controller class
@@ -92,6 +98,17 @@ public class MainScreenController implements Initializable {
         if (alert.getResult() == ButtonType.OK) {
            Platform.exit(); 
         }  
+    }
+    
+    public void checkForUpcomingApppointment() throws SQLException {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        ObservableList<Appointment> apptList = FXCollections.observableArrayList();
+        apptList = AppointmentRepository.getAllAppointments();
+        boolean isAppointment = false;
+        
+        for (Appointment a : apptList) {
+        }
+        
     }
     
     /**

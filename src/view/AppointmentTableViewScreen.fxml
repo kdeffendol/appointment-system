@@ -36,7 +36,7 @@
                <toggleGroup>
                   <ToggleGroup fx:id="radioButtons" />
                </toggleGroup></RadioButton>
-            <RadioButton fx:id="weekViewRadioButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="169.0" text="Week View" toggleGroup="$radioButtons" />
+            <RadioButton fx:id="weekViewRadioButton" mnemonicParsing="false" onAction="#weekViewRadioButtonPushed" prefHeight="48.0" prefWidth="169.0" text="Week View" toggleGroup="$radioButtons" />
             <Button mnemonicParsing="false" onAction="#resetButtonPushed" prefHeight="35.0" prefWidth="92.0" text="Reset" />
          </children>
       </HBox>
