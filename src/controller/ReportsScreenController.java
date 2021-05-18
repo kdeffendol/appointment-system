@@ -22,13 +22,19 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import model.AppointmentViewModel;
 import model.Contact;
 import model.Country;
+import model.MonthTypeReport;
 import repos.ContactRepository;
 import repos.CountryRepository;
+import repos.ReportRepository;
 
 /**
  * FXML Controller class
@@ -36,23 +42,13 @@ import repos.CountryRepository;
  * @author kelsey
  */
 public class ReportsScreenController implements Initializable {
-    @FXML ComboBox reportTypeComboBox;
     
-    @FXML HBox appointmentTypeHBox;
-    @FXML TextField appointmentTypeTextField;
-    
-    @FXML HBox monthHBox;
-    @FXML ComboBox monthComboBox;
-    
-    @FXML HBox contactNameHBox;
-    @FXML ComboBox contactNameComboBox;
-    
-    @FXML HBox countryHBox;
-    @FXML ComboBox countryComboBox;
+    @FXML TableView <MonthTypeReport> typeMonthTableView;
+    @FXML TableColumn <MonthTypeReport, Integer> countTableColumn;
+    @FXML TableColumn <MonthTypeReport, String> typeTableColumn;
+    @FXML TableColumn <MonthTypeReport, String> monthTableColumn;
     
     @FXML Button backButton;
-    @FXML Button runReportButton;
-    
     
     public void backButtonPushed(ActionEvent event) throws IOException {
         Parent mainPage = FXMLLoader.load(getClass().getResource("/view/MainScreen.fxml"));
@@ -65,57 +61,21 @@ public class ReportsScreenController implements Initializable {
         window.show();
     }
     
-    public void populateMonthComboBox() {
-        ObservableList<String> monthNames = FXCollections.observableArrayList();
-        monthNames.addAll("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
-        
-        monthComboBox.setItems(monthNames);
-    }
-    
-    /**
-     * Populates the CountryComboBox using country data from the Countries table
-     * @throws SQLException 
-     */
-    public void populateCountryComboBox() throws SQLException {
-        //get all countries from database
-        ObservableList<String> countryNames = FXCollections.observableArrayList();
-        ObservableList<Country> countries = FXCollections.observableArrayList();
-        
-        countries = CountryRepository.getAllCountries();
-        
-        //loop thru countries list and get names
-        for (Country c : countries) {
-            countryNames.add(c.getCountryName());
-        }
-        
-        countryComboBox.setItems(countryNames);
-    }
-    
-    public void populateContactNamesComboBox() throws SQLException {
-        ObservableList<Contact> contacts = FXCollections.observableArrayList();
-        ObservableList<String> contactNames = FXCollections.observableArrayList();
-        
-        contacts = ContactRepository.getAllContacts();
-        
-        //loop thru contact objects to get names
-        for (Contact c : contacts) {
-            contactNames.add(c.getName());
-        }
-        
-        //populate combo box
-        contactNameComboBox.setItems(contactNames);
-    }
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //populate combo boxes
-        populateMonthComboBox();
         try {
-            populateCountryComboBox();
-            populateContactNamesComboBox();
+            ObservableList<MonthTypeReport> monthTypeList = ReportRepository.getAllMonthTypeReports();
+            
+            countTableColumn.setCellValueFactory(new PropertyValueFactory<>("count"));
+            typeTableColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+            monthTableColumn.setCellValueFactory(new PropertyValueFactory<>("month"));
+            
+            typeMonthTableView.setItems(monthTypeList);
+            
         } catch (SQLException ex) {
             Logger.getLogger(ReportsScreenController.class.getName()).log(Level.SEVERE, null, ex);
         }
