@@ -2,11 +2,17 @@ package controller;
 
 import java.io.*;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.TextStyle;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,7 +26,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.Appointment;
 import model.User;
+import repos.AppointmentRepository;
 import repos.UserRepository;
 
 /**
@@ -39,15 +47,20 @@ public class LoginScreenController implements Initializable {
     @FXML Label passwordLabel;
     @FXML Label zoneIdLabel;
     
+    private Appointment upcomingAppt;
+    
     /**
      * Checks if user credentials are correct and will login user if they are.
      * @param event
      * @throws IOException 
      */
-    public void loginButtonPressed(ActionEvent event) throws IOException {
+    public void loginButtonPressed(ActionEvent event) throws IOException, SQLException {
         appendLoginActivityReport();
         
         if (checkLoginValidation() == true) {
+            
+            alertUserOfAppt();
+            
             Parent mainPage = FXMLLoader.load(getClass().getResource("/view/MainScreen.fxml"));
             Scene mainScene = new Scene(mainPage);
 
@@ -104,6 +117,60 @@ public class LoginScreenController implements Initializable {
         outputFile.println(usernameTextField.getText() + " | " + Instant.now() + " | " + checkLoginValidation());
         
         outputFile.close();
+    }
+    
+    public void alertUserOfAppt() throws SQLException {
+        if (checkForUpcomingApppointment() == true) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, 
+                "User has an upcoming appointment at " + upcomingAppt.getStartTime() +
+                        ". Appointment ID: " + upcomingAppt.getAppointmentId());
+        
+            alert.showAndWait();
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, 
+                "There are no upcoming appointments.");
+        
+            alert.showAndWait();
+        }
+    }
+    
+    //TODO:
+    public boolean checkForUpcomingApppointment() throws SQLException {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        LocalDateTime fifteenMinutesLaterTime = currentDateTime.plusMinutes(15);
+        ObservableList<Appointment> apptList = FXCollections.observableArrayList();
+        apptList = AppointmentRepository.getAllAppointments();
+        boolean isAppointment = false;
+        
+        for (Appointment a : apptList) {
+            //get start time
+            LocalDateTime startTime = a.getStartTime();
+            //convert it
+            startTime = convertUTCToLocalTime(startTime);
+            //compare it
+            if (startTime.isAfter(currentDateTime) && startTime.isBefore(fifteenMinutesLaterTime)) {
+                isAppointment = true;
+                upcomingAppt = a;
+            }
+        }   
+        
+        return isAppointment;
+    }
+    
+    /**
+     * Converts the time given in UTC to the user's local time
+     * @param dateTime
+     * @return 
+     */
+    public LocalDateTime convertUTCToLocalTime(LocalDateTime dateTime) {
+        //put in utc time
+        ZonedDateTime zonedDateTime = dateTime.atZone(ZoneOffset.UTC);
+        
+        //convert to local time
+        zonedDateTime = zonedDateTime.withZoneSameInstant(ZoneId.systemDefault());
+        
+        return zonedDateTime.toLocalDateTime();
     }
 
     /**
