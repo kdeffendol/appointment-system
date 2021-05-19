@@ -32,6 +32,7 @@ import model.AppointmentViewModel;
 import model.Contact;
 import model.Country;
 import model.MonthTypeReport;
+import model.ScheduleReport;
 import repos.ContactRepository;
 import repos.CountryRepository;
 import repos.ReportRepository;
@@ -48,6 +49,16 @@ public class ReportsScreenController implements Initializable {
     @FXML TableColumn <MonthTypeReport, String> typeTableColumn;
     @FXML TableColumn <MonthTypeReport, String> monthTableColumn;
     
+    @FXML TableView <ScheduleReport> scheduleTableView;
+    @FXML TableColumn <ScheduleReport, String> contactNameTableColumn;
+    @FXML TableColumn <ScheduleReport, String> appointmentIdTableColumn;
+    @FXML TableColumn <ScheduleReport, String> titleTableColumn;
+    @FXML TableColumn <ScheduleReport, String> type2TableColumn;
+    @FXML TableColumn <ScheduleReport, String> descriptionTableColumn;
+    @FXML TableColumn <ScheduleReport, String> startDateTimeTableColumn;
+    @FXML TableColumn <ScheduleReport, String> endDateTimeTableColumn;
+    @FXML TableColumn <ScheduleReport, String> customerIdTableColumn;
+    
     @FXML Button backButton;
     
     public void backButtonPushed(ActionEvent event) throws IOException {
@@ -61,20 +72,37 @@ public class ReportsScreenController implements Initializable {
         window.show();
     }
     
-
+    public void updateTables() throws SQLException {
+        ObservableList<MonthTypeReport> monthTypeList = ReportRepository.getAllMonthTypeReports();
+            
+        countTableColumn.setCellValueFactory(new PropertyValueFactory<>("count"));
+        typeTableColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        monthTableColumn.setCellValueFactory(new PropertyValueFactory<>("month"));
+            
+        typeMonthTableView.setItems(monthTypeList);
+        
+        ObservableList<ScheduleReport> scheduleReportList = ReportRepository.getAllScheduleReports();
+        
+        contactNameTableColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        appointmentIdTableColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
+        titleTableColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        type2TableColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        descriptionTableColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        startDateTimeTableColumn.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
+        endDateTimeTableColumn.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
+        customerIdTableColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        
+        scheduleTableView.setItems(scheduleReportList);
+    }
+    
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            ObservableList<MonthTypeReport> monthTypeList = ReportRepository.getAllMonthTypeReports();
-            
-            countTableColumn.setCellValueFactory(new PropertyValueFactory<>("count"));
-            typeTableColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-            monthTableColumn.setCellValueFactory(new PropertyValueFactory<>("month"));
-            
-            typeMonthTableView.setItems(monthTypeList);
+            updateTables();
             
         } catch (SQLException ex) {
             Logger.getLogger(ReportsScreenController.class.getName()).log(Level.SEVERE, null, ex);

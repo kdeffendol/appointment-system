@@ -14,6 +14,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
 import model.MonthTypeReport;
+import model.ScheduleReport;
 import utils.DBConnection;
 import utils.DBQuery;
 
@@ -51,5 +52,39 @@ public class ReportRepository {
         return monthTypeReports;
     }
     
-    public static 
+    public static ObservableList<ScheduleReport> getAllScheduleReports() throws SQLException {
+        Connection conn = DBConnection.startConnection();
+        
+        String selectStatement = "SELECT contacts.Contact_Name, appointments.Appointment_ID, appointments.Title, appointments.Type, appointments.Description, appointments.Start, appointments.End, appointments.Customer_ID " +
+            "FROM appointments " +
+            "INNER JOIN contacts " +
+            "ON contacts.Contact_ID = appointments.Contact_ID " +
+            "ORDER BY contacts.Contact_Name, appointments.Start";
+        
+        DBQuery.setPreparedStatement(conn, selectStatement); //create prepared statement  
+        PreparedStatement ps = DBQuery.getPreparedStatement();
+        
+        ps.execute();
+        
+        ObservableList <ScheduleReport> scheduleReports = FXCollections.observableArrayList();   
+        ResultSet rs = ps.getResultSet(); //get result set
+        
+        while (rs.next() == true) {
+            String contactName = rs.getString("Contact_Name");
+            int apptId = rs.getInt("Appointment_ID");
+            String title = rs.getString("Title");
+            String type = rs.getString("Type");
+            String description = rs.getString("Description");
+            LocalDateTime startDate = rs.getTimestamp("Start").toLocalDateTime();
+            LocalDateTime endDate = rs.getTimestamp("End").toLocalDateTime();
+            int customerId = rs.getInt("Customer_ID");
+            
+            
+            ScheduleReport scheduleReport = new ScheduleReport(contactName, apptId, title, type, description, startDate, endDate, customerId);
+            
+            scheduleReports.add(scheduleReport);
+        }
+        
+        return scheduleReports;
+    }
 }
