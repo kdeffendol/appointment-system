@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
+import model.CustomerCountryReport;
 import model.MonthTypeReport;
 import model.ScheduleReport;
 import utils.DBConnection;
@@ -86,5 +87,34 @@ public class ReportRepository {
         }
         
         return scheduleReports;
+    }
+    
+    public static ObservableList<CustomerCountryReport> getAllCustomerCountryReports() throws SQLException {
+        Connection conn = DBConnection.startConnection();
+        
+        String selectStatement = "SELECT COUNT(*), countries.Country "
+                + "FROM customers "
+                + "INNER JOIN first_level_divisions"
+                + " ON customers.Division_ID = first_level_divisions.Division_ID "
+                + "INNER JOIN countries ON first_level_divisions.COUNTRY_ID = countries.Country_ID "
+                + "GROUP BY countries.Country";
+        
+        DBQuery.setPreparedStatement(conn, selectStatement); //create prepared statement  
+        PreparedStatement ps = DBQuery.getPreparedStatement();
+        
+        ps.execute();
+        
+        ObservableList <CustomerCountryReport> reports = FXCollections.observableArrayList();   
+        ResultSet rs = ps.getResultSet(); //get result set
+        
+        while (rs.next() == true) {
+            int count = rs.getInt("COUNT(*)");
+            String country = rs.getString("Country");
+            
+            CustomerCountryReport report = new CustomerCountryReport(count, country);
+            reports.add(report);
+        }
+        
+        return reports;
     }
 }
