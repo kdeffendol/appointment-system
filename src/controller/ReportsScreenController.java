@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,20 +20,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import model.AppointmentViewModel;
-import model.Contact;
-import model.Country;
+import model.CustomerCountryReport;
 import model.MonthTypeReport;
 import model.ScheduleReport;
-import repos.ContactRepository;
-import repos.CountryRepository;
 import repos.ReportRepository;
 
 /**
@@ -58,6 +50,10 @@ public class ReportsScreenController implements Initializable {
     @FXML TableColumn <ScheduleReport, String> startDateTimeTableColumn;
     @FXML TableColumn <ScheduleReport, String> endDateTimeTableColumn;
     @FXML TableColumn <ScheduleReport, String> customerIdTableColumn;
+    
+    @FXML TableView <CustomerCountryReport> countCountryTableView;
+    @FXML TableColumn <CustomerCountryReport, Integer> customerCountTableColumn;
+    @FXML TableColumn <CustomerCountryReport, String> countryTableColumn;
     
     @FXML Button backButton;
     
@@ -93,6 +89,12 @@ public class ReportsScreenController implements Initializable {
         customerIdTableColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         
         scheduleTableView.setItems(scheduleReportList);
+        
+        ObservableList<CustomerCountryReport> customerCountryReportList = ReportRepository.getAllCustomerCountryReports();
+        customerCountTableColumn.setCellValueFactory(new PropertyValueFactory<>("count"));
+        countryTableColumn.setCellValueFactory(new PropertyValueFactory<>("country"));
+        
+        countCountryTableView.setItems(customerCountryReportList);
     }
     
     

@@ -34,7 +34,7 @@
       <Label layoutX="13.0" layoutY="198.0" text="Schedules" />
       <TableView fx:id="countCountryTableView" layoutX="367.0" layoutY="31.0" prefHeight="152.0" prefWidth="241.0">
          <columns>
-            <TableColumn fx:id="countryCountTableColumn" prefWidth="83.0" text="Count" />
+            <TableColumn fx:id="customerCountTableColumn" prefWidth="83.0" text="Count" />
             <TableColumn fx:id="countryTableColumn" prefWidth="157.0" text="Country" />
          </columns>
       </TableView>
