@@ -8,6 +8,9 @@ package controller;
 import java.io.IOException;
 import static java.lang.Integer.parseInt;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -35,6 +38,8 @@ import model.Appointment;
 import model.Contact;
 import repos.AppointmentRepository;
 import repos.ContactRepository;
+import utils.DBConnection;
+import utils.DBQuery;
 
 /**
  * FXML Controller class
@@ -56,6 +61,9 @@ public class ModifyAppointmentScreenController implements Initializable {
     
     @FXML Button saveButton;
     @FXML Button cancelButton;
+    
+    private LocalDateTime startDateTime;
+    private LocalDateTime endDateTime;
 
     
     /**
@@ -85,10 +93,10 @@ public class ModifyAppointmentScreenController implements Initializable {
     public void saveButtonPushed(ActionEvent event) throws IOException, Exception {
         String str = startDateTimeTextField.getText();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime startDateTime = LocalDateTime.parse(str, formatter);
+        startDateTime = LocalDateTime.parse(str, formatter);
         
         str = endDateTimeTextField.getText();
-        LocalDateTime endDateTime = LocalDateTime.parse(str, formatter);
+        endDateTime = LocalDateTime.parse(str, formatter);
         
         if (isInBusinessHours(startDateTime) == false || isInBusinessHours(endDateTime) == false) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, 
@@ -96,18 +104,22 @@ public class ModifyAppointmentScreenController implements Initializable {
              
              alert.showAndWait();
         } else {
-            //save modified appointment back into database
-            updateAppointment();
+            if (isValid() == true) {
+                //save modified appointment back into database
+                updateAppointment();
         
-            //go back to AppointmentTableViewScreen
-            Parent mainPage = FXMLLoader.load(getClass().getResource("/view/AppointmentTableViewScreen.fxml"));
-            Scene mainScene = new Scene(mainPage);
+                //go back to AppointmentTableViewScreen
+                Parent mainPage = FXMLLoader.load(getClass().getResource("/view/AppointmentTableViewScreen.fxml"));
+                Scene mainScene = new Scene(mainPage);
         
-            //this line gets the stage information
-            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+                 //this line gets the stage information
+                Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         
-            window.setScene(mainScene);
-            window.show();
+                window.setScene(mainScene);
+                window.show();
+            } else {
+                alertUserIfOverlap();
+            }
         }
     }
     /**
@@ -239,6 +251,49 @@ public class ModifyAppointmentScreenController implements Initializable {
         //check if time is in business hours
         return hour >= 8 && hour < 22;
         
+    }
+    
+       public boolean isValid() throws SQLException {
+        boolean isValid = false;
+        LocalDateTime startDateTime = convertTimeToUTC(this.startDateTime);
+        LocalDateTime endDateTime = convertTimeToUTC(this.endDateTime);
+        
+        Connection conn = DBConnection.startConnection(); 
+        
+        String selectStatement = "SELECT * " +
+            "FROM appointments " +
+            "WHERE (? >= Start AND ? <= End) " +
+            "OR (? >= Start AND ? <= End) " +
+            "OR (? <= Start AND ? >= End)";
+        
+        DBQuery.setPreparedStatement(conn, selectStatement); //create prepared statement       
+        PreparedStatement ps = DBQuery.getPreparedStatement();
+        
+        ps.setString(1, startDateTime.toString());
+        ps.setString(2, startDateTime.toString());
+        ps.setString(3, endDateTime.toString());
+        ps.setString(4, endDateTime.toString());
+        ps.setString(5, startDateTime.toString());
+        ps.setString(6, endDateTime.toString());
+        
+        ps.execute();
+        
+        ResultSet rs = ps.getResultSet();
+        
+        if(rs.next() == false) {
+            isValid = true;
+        }
+        
+        DBConnection.closeConnection();
+        
+        return isValid;
+    }
+       
+    public void alertUserIfOverlap() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, 
+            "Appointment time is overlapping with existing appointment. Please try again.");
+             
+        alert.showAndWait();
     }
     
     /**

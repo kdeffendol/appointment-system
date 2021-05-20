@@ -8,6 +8,9 @@ package controller;
 import java.io.IOException;
 import static java.lang.Integer.parseInt;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -38,6 +41,8 @@ import model.Customer;
 import repos.AppointmentRepository;
 import repos.ContactRepository;
 import repos.CustomerRepository;
+import utils.DBConnection;
+import utils.DBQuery;
 
 /**
  * FXML Controller class
@@ -102,7 +107,7 @@ public class AddAppointmentScreenController implements Initializable {
              
              alert.showAndWait();
         } else {
-            if (isOverlapping() == false) {
+            if (isValid() == true) {
                 //save appointment into database
                 createNewAppointment();
         
@@ -213,30 +218,47 @@ public class AddAppointmentScreenController implements Initializable {
         
     }
     
-    public boolean isOverlapping() throws SQLException {
-        boolean isOverlap = false;
-        LocalDateTime startDateTime = convertUTCToLocalTime(this.startDateTime);
-        LocalDateTime endDateTime = convertUTCToLocalTime(this.endDateTime);
+    public boolean isValid() throws SQLException {
+        boolean isValid = false;
+        LocalDateTime startDateTime = convertTimeToUTC(this.startDateTime);
+        LocalDateTime endDateTime = convertTimeToUTC(this.endDateTime);
         
-        //get all appointments
-        ObservableList<Appointment> appts = AppointmentRepository.getAllAppointments();
+        Connection conn = DBConnection.startConnection(); 
         
-        for (Appointment a : appts) {
-            if ((endDateTime.isAfter(a.getStartTime()) && startDateTime.isBefore(a.getStartTime())) || (startDateTime.isBefore(a.getEndTime()) && endDateTime.isAfter(a.getEndTime()))) {              
-                isOverlap = true;
-            }
+        String selectStatement = "SELECT * " +
+            "FROM appointments " +
+            "WHERE (? >= Start AND ? <= End) " +
+            "OR (? >= Start AND ? <= End) " +
+            "OR (? <= Start AND ? >= End)";
+        
+        DBQuery.setPreparedStatement(conn, selectStatement); //create prepared statement       
+        PreparedStatement ps = DBQuery.getPreparedStatement();
+        
+        ps.setString(1, startDateTime.toString());
+        ps.setString(2, startDateTime.toString());
+        ps.setString(3, endDateTime.toString());
+        ps.setString(4, endDateTime.toString());
+        ps.setString(5, startDateTime.toString());
+        ps.setString(6, endDateTime.toString());
+        
+        ps.execute();
+        
+        ResultSet rs = ps.getResultSet();
+        
+        if(rs.next() == false) {
+            isValid = true;
         }
         
-        return isOverlap;
+        DBConnection.closeConnection();
+        
+        return isValid;
     }
     
-    public void alertUserIfOverlap() throws SQLException {
-        if (isOverlapping() == true) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, 
-                "Appointment time is overlapping with existing appointment. Please try again.");
+    public void alertUserIfOverlap() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, 
+            "Appointment time is overlapping with existing appointment. Please try again.");
              
-             alert.showAndWait();
-        }
+        alert.showAndWait();
     }
     
     /**

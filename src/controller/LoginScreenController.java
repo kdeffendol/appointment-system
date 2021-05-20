@@ -55,6 +55,9 @@ public class LoginScreenController implements Initializable {
      * @throws IOException 
      */
     public void loginButtonPressed(ActionEvent event) throws IOException, SQLException {
+        //Language translation
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("language_files/rb", Locale.getDefault());
+        
         appendLoginActivityReport();
         
         if (checkLoginValidation() == true) {
@@ -72,7 +75,7 @@ public class LoginScreenController implements Initializable {
         }
         else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, 
-                "Username/Password is not correct. Try again.");
+                resourceBundle.getString("error"));
         
             alert.showAndWait();
         }
@@ -89,8 +92,6 @@ public class LoginScreenController implements Initializable {
         
         try {
             User user = UserRepository.getUserByUsername(username);
-            System.out.println(passwordField.getText());
-            System.out.println(user.getPassword());
             
             //check if password is correct
             if (user.getPassword().equals(passwordField.getText())) {
