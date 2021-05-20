@@ -56,6 +56,7 @@ public class AppointmentRepository {
         
         ps.execute();
         
+        DBConnection.closeConnection();
     }
     
     /**
@@ -75,6 +76,7 @@ public class AppointmentRepository {
         
         ps.execute();
         
+        DBConnection.closeConnection();
     }
     
     /**
@@ -105,6 +107,8 @@ public class AppointmentRepository {
         ps.setInt(12, appt.getAppointmentId());
         
         ps.execute();
+        
+        DBConnection.closeConnection();
     }
     
     
@@ -199,6 +203,7 @@ public class AppointmentRepository {
             
             appointments.add(appt);
         }
+        DBConnection.closeConnection();
         
         return appointments;
         

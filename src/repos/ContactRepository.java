@@ -122,6 +122,8 @@ public class ContactRepository {
             contacts.add(contact);
         }
         
+        DBConnection.closeConnection();
+        
         return contacts;
         
     }

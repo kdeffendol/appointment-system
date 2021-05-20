@@ -60,6 +60,8 @@ public class AddAppointmentScreenController implements Initializable {
     @FXML Button saveButton;
     @FXML Button cancelButton;
     
+    private LocalDateTime startDateTime;
+    private LocalDateTime endDateTime;
     
     /**
      * Changes UI back to the AppointmentTableViewScreen
@@ -89,10 +91,10 @@ public class AddAppointmentScreenController implements Initializable {
     public void saveButtonPushed(ActionEvent event) throws IOException, SQLException, Exception {
         String str = startDateTimeTextField.getText();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime startDateTime = LocalDateTime.parse(str, formatter);
+        startDateTime = LocalDateTime.parse(str, formatter);
         
         str = endDateTimeTextField.getText();
-        LocalDateTime endDateTime = LocalDateTime.parse(str, formatter);
+        endDateTime = LocalDateTime.parse(str, formatter);
         
         if (isInBusinessHours(startDateTime) == false || isInBusinessHours(endDateTime) == false) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, 
@@ -100,19 +102,24 @@ public class AddAppointmentScreenController implements Initializable {
              
              alert.showAndWait();
         } else {
-            //save appointment into database
-            createNewAppointment();
+            if (isOverlapping() == false) {
+                //save appointment into database
+                createNewAppointment();
         
-            //go back to AppointmentTableViewScreen
-            Parent mainPage = FXMLLoader.load(getClass().getResource("/view/AppointmentTableViewScreen.fxml"));
-            Scene mainScene = new Scene(mainPage);
+                //go back to AppointmentTableViewScreen
+                Parent mainPage = FXMLLoader.load(getClass().getResource("/view/AppointmentTableViewScreen.fxml"));
+                Scene mainScene = new Scene(mainPage);
         
-            //this line gets the stage information
-            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+                //this line gets the stage information
+                Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         
-            window.setScene(mainScene);
-            window.show();
+                window.setScene(mainScene);
+                window.show();
+            } else {
+                alertUserIfOverlap();
+            }
         }
+            
     }
     
     /**
@@ -204,6 +211,32 @@ public class AddAppointmentScreenController implements Initializable {
         //check if time is in business hours
         return hour >= 8 && hour < 22;
         
+    }
+    
+    public boolean isOverlapping() throws SQLException {
+        boolean isOverlap = false;
+        LocalDateTime startDateTime = convertUTCToLocalTime(this.startDateTime);
+        LocalDateTime endDateTime = convertUTCToLocalTime(this.endDateTime);
+        
+        //get all appointments
+        ObservableList<Appointment> appts = AppointmentRepository.getAllAppointments();
+        
+        for (Appointment a : appts) {
+            if ((endDateTime.isAfter(a.getStartTime()) && startDateTime.isBefore(a.getStartTime())) || (startDateTime.isBefore(a.getEndTime()) && endDateTime.isAfter(a.getEndTime()))) {              
+                isOverlap = true;
+            }
+        }
+        
+        return isOverlap;
+    }
+    
+    public void alertUserIfOverlap() throws SQLException {
+        if (isOverlapping() == true) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, 
+                "Appointment time is overlapping with existing appointment. Please try again.");
+             
+             alert.showAndWait();
+        }
     }
     
     /**

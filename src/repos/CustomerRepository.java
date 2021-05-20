@@ -47,6 +47,8 @@ public class CustomerRepository {
         
         ps.execute();
         
+        DBConnection.closeConnection();
+        
     }
     
     /**
@@ -65,6 +67,8 @@ public class CustomerRepository {
         ps.setInt(1, customerId);
         
         ps.execute();
+        
+        DBConnection.closeConnection();
         
     }
     
@@ -91,6 +95,8 @@ public class CustomerRepository {
         ps.setInt(8, customer.getId());
         
         ps.execute();
+        
+        DBConnection.closeConnection();
     }
     
     
@@ -179,6 +185,8 @@ public class CustomerRepository {
             
             customers.add(customer);
         }
+        
+        DBConnection.closeConnection();
         
         return customers;
         

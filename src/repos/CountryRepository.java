@@ -142,6 +142,8 @@ public class CountryRepository {
             countries.add(country);
         }
         
+        DBConnection.closeConnection();
+        
         return countries;
         
     }

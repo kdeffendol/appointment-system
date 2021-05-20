@@ -189,6 +189,8 @@ public class FirstLevelDivRepository {
             divisions.add(division);
         }
         
+        DBConnection.closeConnection();
+        
         return divisions;
         
     }

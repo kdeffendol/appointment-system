@@ -50,6 +50,8 @@ public class ReportRepository {
             monthTypeReports.add(monthTypeReport);
         }
         
+        DBConnection.closeConnection();
+        
         return monthTypeReports;
     }
     
@@ -86,6 +88,8 @@ public class ReportRepository {
             scheduleReports.add(scheduleReport);
         }
         
+        DBConnection.closeConnection();
+        
         return scheduleReports;
     }
     
@@ -114,6 +118,8 @@ public class ReportRepository {
             CustomerCountryReport report = new CustomerCountryReport(count, country);
             reports.add(report);
         }
+        
+        DBConnection.closeConnection();
         
         return reports;
     }

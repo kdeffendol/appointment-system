@@ -94,6 +94,8 @@ public class UserRepository {
             users.add(user);
         }
         
+        DBConnection.closeConnection();
+        
         return users;
         
     }
