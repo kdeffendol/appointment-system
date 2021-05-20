@@ -144,7 +144,7 @@ public class ModifyAppointmentScreenController implements Initializable {
         
         customerIdTextField.setText(String.valueOf(appt.getCustomerId()));
         userIdTextField.setText(String.valueOf(appt.getUserId()));
-        //contactNameComboBox.setValue(appt.getC);   
+        contactNameComboBox.getSelectionModel().select(appt.getContactId() - 1);  
         
     }
     
@@ -253,7 +253,12 @@ public class ModifyAppointmentScreenController implements Initializable {
         
     }
     
-       public boolean isValid() throws SQLException {
+    /**
+     * Checks if the startDateTime and endDateTime are not overlapping with an existing appointment.
+     * @return
+     * @throws SQLException 
+     */
+    public boolean isValid() throws SQLException {
         boolean isValid = false;
         LocalDateTime startDateTime = convertTimeToUTC(this.startDateTime);
         LocalDateTime endDateTime = convertTimeToUTC(this.endDateTime);

@@ -218,6 +218,11 @@ public class AddAppointmentScreenController implements Initializable {
         
     }
     
+    /**
+     * Checks if the startDateTime and endDateTime are not overlapping with an existing appointment.
+     * @return
+     * @throws SQLException 
+     */
     public boolean isValid() throws SQLException {
         boolean isValid = false;
         LocalDateTime startDateTime = convertTimeToUTC(this.startDateTime);

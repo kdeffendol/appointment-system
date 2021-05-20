@@ -96,6 +96,8 @@ public class ModifyCustomerScreenController implements Initializable {
         nameTextField.setText(customer.getName());
         addressTextField.setText(customer.getAddress());
         //get combo box selections
+        //countryComboBox.getSelectionModel().select();
+        firstDivisionComboBox.getSelectionModel().select(customer.getDivisionId() - 1);
         postalCodeTextField.setText(customer.getPostalCode());
         phoneNumberTextField.setText(customer.getPhone());
         
@@ -114,8 +116,8 @@ public class ModifyCustomerScreenController implements Initializable {
         customer.setPostalCode(postalCodeTextField.getText());
         customer.setDivisionId(getFirstDivSelection());
         customer.setPhone(phoneNumberTextField.getText());
-        customer.setCreatedBy("test"); //BAD PLS CHANGE
-        customer.setLastUpdatedBy("test"); //ALSO BAD PLS CHANGE
+        customer.setCreatedBy("test");
+        customer.setLastUpdatedBy("test");
         
         CustomerRepository.updateCustomer(customer);
     }

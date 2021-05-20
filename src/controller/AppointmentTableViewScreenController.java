@@ -184,7 +184,7 @@ public class AppointmentTableViewScreenController implements Initializable {
     }
    
     /**
-     * Filters the TableView by the current month
+     * Filters the TableView by the current month. A lambda function is used here to filter the Appointments by the current month because the function is only needed for a short period of time.
      * @throws SQLException 
      */
     public void filterTableByMonth() throws SQLException {
@@ -202,7 +202,7 @@ public class AppointmentTableViewScreenController implements Initializable {
     }
     
     /**
-     * Filters the table based on the current week
+     * Filters the table based on the current week. A lambda function is used here to filter the Appointments by the current month because the function is only needed for a short period of time. 
      * @throws SQLException 
      */
     public void filterTableByWeek() throws SQLException {
