@@ -160,11 +160,19 @@ public class AppointmentTableViewScreenController implements Initializable {
            //get appt to delete
            AppointmentViewModel apptToBeDeleted = appointmentTableView.getSelectionModel().getSelectedItem();
            
+           alertUserOfDeletedAppt(apptToBeDeleted);
            //delete appointment with matching id
            AppointmentRepository.deleteAppointment(apptToBeDeleted.getId());
+           
         }  
         //update table
         updateTable();
+    }
+    
+    public void alertUserOfDeletedAppt(AppointmentViewModel apptToBeDeleted) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "The appointment was deleted. Appointment ID: " + apptToBeDeleted.getId() + " Type: " + apptToBeDeleted.getType());
+        
+        alert.showAndWait();
     }
     
     /**
@@ -202,7 +210,7 @@ public class AppointmentTableViewScreenController implements Initializable {
     }
     
     /**
-     * Filters the table based on the current week. A lambda function is used here to filter the Appointments by the current month because the function is only needed for a short period of time. 
+     * Filters the table based on the current week. A lambda function is used here to filter the Appointments by the current month because the function is only needed for a short period of time 
      * @throws SQLException 
      */
     public void filterTableByWeek() throws SQLException {

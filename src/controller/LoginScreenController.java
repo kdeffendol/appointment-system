@@ -115,7 +115,14 @@ public class LoginScreenController implements Initializable {
         FileWriter fw = new FileWriter(filename, true);
         PrintWriter outputFile = new PrintWriter(fw);
         
-        outputFile.println(usernameTextField.getText() + " | " + Instant.now() + " | " + checkLoginValidation());
+        String loginStatus = "";
+        if (checkLoginValidation()) {
+            loginStatus = "Login successful";
+        } else {
+            loginStatus = "Login unsuccessful";
+        }
+        
+        outputFile.println(usernameTextField.getText() + " | " + Instant.now() + " | " + loginStatus);
         
         outputFile.close();
     }

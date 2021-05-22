@@ -64,6 +64,7 @@ public class ModifyAppointmentScreenController implements Initializable {
     
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
+    private int appointmentId;
 
     
     /**
@@ -97,6 +98,8 @@ public class ModifyAppointmentScreenController implements Initializable {
         
         str = endDateTimeTextField.getText();
         endDateTime = LocalDateTime.parse(str, formatter);
+        
+        appointmentId = parseInt(appointmentIdTextField.getText());
         
         if (isInBusinessHours(startDateTime) == false || isInBusinessHours(endDateTime) == false) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, 
@@ -180,8 +183,8 @@ public class ModifyAppointmentScreenController implements Initializable {
         
         appt.setContactId(getContactNameSelection());
         
-        appt.setCreatedBy("test"); //BAD PLS CHANGE
-        appt.setLastUpdatedBy("test"); //ALSO BAD PLS CHANGE
+        appt.setCreatedBy("test");
+        appt.setLastUpdatedBy("test");
         
         //update in database
         AppointmentRepository.updateAppointment(appt);
@@ -267,9 +270,10 @@ public class ModifyAppointmentScreenController implements Initializable {
         
         String selectStatement = "SELECT * " +
             "FROM appointments " +
-            "WHERE (? >= Start AND ? <= End) " +
+            "WHERE ((? >= Start AND ? <= End) " +
             "OR (? >= Start AND ? <= End) " +
-            "OR (? <= Start AND ? >= End)";
+            "OR (? <= Start AND ? >= End))"
+                + "AND (Appointment_ID != ?)";
         
         DBQuery.setPreparedStatement(conn, selectStatement); //create prepared statement       
         PreparedStatement ps = DBQuery.getPreparedStatement();
@@ -280,6 +284,7 @@ public class ModifyAppointmentScreenController implements Initializable {
         ps.setString(4, endDateTime.toString());
         ps.setString(5, startDateTime.toString());
         ps.setString(6, endDateTime.toString());
+        ps.setInt(7, appointmentId);
         
         ps.execute();
         
