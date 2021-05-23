@@ -29,6 +29,10 @@ public class Country {
         this.lastUpdatedBy = lastUpdatedBy;
     }
     
+    @Override
+    public String toString() {
+        return this.countryName;
+    }
 
     public int getId() {
         return id;

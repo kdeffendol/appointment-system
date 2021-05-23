@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Customer;
+import model.CustomerEditModel;
 import utils.DBConnection;
 import utils.DBQuery;
 
@@ -138,15 +139,54 @@ public class CustomerRepository {
         int divisionId = rs.getInt("Division_ID");
         
         
-
-       
-        
         //make customer object
         Customer customer = new Customer(id, name, address, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdatedBy, divisionId);
                        
         DBConnection.closeConnection(); //close connection
         
         return customer;       
+    }
+    
+    public static CustomerEditModel getCustomerEditModelbyCustomerId(int customerId) throws SQLException, Exception {
+        Connection conn = DBConnection.startConnection();
+        
+        String selectStatement = "SELECT customers.Customer_ID, customers.Customer_Name, "
+                + "customers.Address, "
+                + "customers.Postal_Code, customers.Phone, "
+                + "customers.Division_ID, first_level_divisions.COUNTRY_ID "
+                + "FROM customers "
+                + "INNER JOIN first_level_divisions "
+                + "ON customers.Division_ID = first_level_divisions.Division_ID "
+                + "WHERE customers.Customer_ID = ?";
+        
+        DBQuery.setPreparedStatement(conn, selectStatement); //create prepared statement       
+        PreparedStatement ps = DBQuery.getPreparedStatement();
+        
+        ps.setInt(1, customerId);
+        ps.execute();
+        
+        ResultSet rs = ps.getResultSet(); //get result set
+        
+        if(rs.next() == false) {
+            throw new Exception("customerId not found");
+        }
+        
+        //mapping
+        int id = rs.getInt("Customer_ID");
+        String name = rs.getString("Customer_Name");
+        String address = rs.getString("Address");
+        String postalCode = rs.getString("Postal_Code");
+        String phone = rs.getString("Phone");
+        int firstDivisionId = rs.getInt("Division_ID");
+        int countryId = rs.getInt("COUNTRY_ID");
+                
+        DBConnection.closeConnection();
+        
+        //Make CustomerEditModel object
+        CustomerEditModel customer = new CustomerEditModel(id, name, address, countryId, firstDivisionId, postalCode, phone);
+        
+        return customer;
+        
     }
     
     /**

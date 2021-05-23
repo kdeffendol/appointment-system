@@ -27,6 +27,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Country;
 import model.Customer;
+import model.CustomerEditModel;
 import model.FirstLevelDivision;
 import repos.CountryRepository;
 import repos.CustomerRepository;
@@ -42,13 +43,15 @@ public class ModifyCustomerScreenController implements Initializable {
     @FXML TextField customerIdTextField;
     @FXML TextField nameTextField;
     @FXML TextField addressTextField;
-    @FXML ComboBox countryComboBox;
-    @FXML ComboBox firstDivisionComboBox;
+    @FXML ComboBox<Country> countryComboBox;
+    @FXML ComboBox<FirstLevelDivision> firstDivisionComboBox;
     @FXML TextField postalCodeTextField;
     @FXML TextField phoneNumberTextField;
     
     @FXML Button saveButton;
     @FXML Button cancelButton;
+    
+    ObservableList<String> divisionNames;
     
     /**
      * Updates the Customer data in the database and returns user to the CustomerTableViewScreen
@@ -90,16 +93,30 @@ public class ModifyCustomerScreenController implements Initializable {
      * @throws Exception 
      */
     public void initializeTextFields(int id) throws Exception {
-        Customer customer = CustomerRepository.getCustomerByCustomerId(id);
+        populateCountryComboBox();
+        
+        
+        CustomerEditModel customer = CustomerRepository.getCustomerEditModelbyCustomerId(id);
         
         customerIdTextField.setText(String.valueOf(customer.getId()));
         nameTextField.setText(customer.getName());
         addressTextField.setText(customer.getAddress());
-        //get combo box selections
-        //countryComboBox.getSelectionModel().select();
-        firstDivisionComboBox.getSelectionModel().select(customer.getDivisionId() - 1);
+        Country selectedCountry = countryComboBox.getItems()
+                .stream()
+                .filter(c -> customer.getCountryId() == c.getId())
+                .findFirst().get();
+        countryComboBox.getSelectionModel().select(selectedCountry);
+        
+        populateFirstDivisionComboBox(selectedCountry.getId());
+        
+        FirstLevelDivision selectedDivision = firstDivisionComboBox.getItems()
+                .stream()
+                .filter(d -> customer.getFirstDivisionId() == d.getId())
+                .findFirst().get();       
+        firstDivisionComboBox.getSelectionModel().select(selectedDivision);
         postalCodeTextField.setText(customer.getPostalCode());
-        phoneNumberTextField.setText(customer.getPhone());
+        phoneNumberTextField.setText(customer.getPhoneNumber());
+        
         
     }
     
@@ -127,18 +144,16 @@ public class ModifyCustomerScreenController implements Initializable {
      * @throws SQLException 
      */
     public void populateCountryComboBox() throws SQLException {
+        
+
         //get all countries from database
-        ObservableList<String> countryNames = FXCollections.observableArrayList();
+        //ObservableList<String> countryNames = FXCollections.observableArrayList();
         ObservableList<Country> countries = FXCollections.observableArrayList();
         
         countries = CountryRepository.getAllCountries();
         
-        //loop thru countries list and get names
-        for (Country c : countries) {
-            countryNames.add(c.getCountryName());
-        }
+        countryComboBox.setItems(countries);
         
-        countryComboBox.setItems(countryNames);
     }
     
     /**
@@ -149,16 +164,11 @@ public class ModifyCustomerScreenController implements Initializable {
      */
     public void populateFirstDivisionComboBox(int countryId) throws Exception {
         ObservableList<FirstLevelDivision> divisions = FXCollections.observableArrayList();
-        ObservableList<String> divisionNames = FXCollections.observableArrayList();
         
         //get divisions with matching country id
         divisions = FirstLevelDivRepository.getDivisionsbyCountryId(countryId);
         
-        for (FirstLevelDivision c : divisions) {
-            divisionNames.add(c.getName());
-        }
-        
-        firstDivisionComboBox.setItems(divisionNames);
+        firstDivisionComboBox.setItems(divisions);
     }
     
     /**
@@ -179,14 +189,11 @@ public class ModifyCustomerScreenController implements Initializable {
      * Populates the first-division ComboBox after country is selected in Country ComboBox.
      * @throws Exception 
      */
-    public void firstDivisionComboBoxClicked() throws Exception {
+    public void countrySelected() throws Exception {
         //check country selected
-        if (countryComboBox.getValue() != null) {
-            String selectedCountry = countryComboBox.getValue().toString();
-            
-            Country selectedCountryObject = CountryRepository.getCountryByCountryName(selectedCountry);
-            
-            int selectedCountryId = selectedCountryObject.getId();
+        Country selectedCountry = countryComboBox.getValue();
+        if (selectedCountry != null) {          
+            int selectedCountryId = selectedCountry.getId();
             
             populateFirstDivisionComboBox(selectedCountryId);
         }   
@@ -200,6 +207,7 @@ public class ModifyCustomerScreenController implements Initializable {
         try {
             // TODO
             populateCountryComboBox();
+            //populateFirstDivisionComboBox();
         } catch (SQLException ex) {
             Logger.getLogger(ModifyCustomerScreenController.class.getName()).log(Level.SEVERE, null, ex);
         }

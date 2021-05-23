@@ -68,7 +68,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="countryComboBox" onAction="#firstDivisionComboBoxClicked" prefHeight="40.0" prefWidth="170.0" promptText="Country" />
+                  <ComboBox fx:id="countryComboBox" onAction="#countrySelected" prefHeight="40.0" prefWidth="170.0" promptText="Country" />
                </children>
             </HBox>
             <HBox prefHeight="50.0" prefWidth="408.0">

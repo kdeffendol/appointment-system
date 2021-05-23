@@ -219,7 +219,7 @@ public class AppointmentTableViewScreenController implements Initializable {
         
         List<AppointmentViewModel> appointmentsInCurrentWeek = AppointmentRepository.getAllAppointmentViewModels()
                 .stream()
-                .filter(a -> a.getStartDateTime().toLocalDate().isAfter(currentDay) && a.getStartDateTime().toLocalDate().isBefore(currentPlusWeek))
+                .filter(a -> a.getStartDateTime().toLocalDate().isAfter(currentDay.minusDays(1)) && a.getStartDateTime().toLocalDate().isBefore(currentPlusWeek.plusDays(1)))
                 .collect(Collectors.toList());
         
         apptList.clear();

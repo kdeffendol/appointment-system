@@ -20,6 +20,11 @@ public class FirstLevelDivision {
     private String lastUpdatedBy;
     private int countryId;
     
+    @Override
+    public String toString() {
+        return this.name;
+    }
+    
     public FirstLevelDivision(int id, String name, LocalDateTime createDate, String createdBy, 
                                 LocalDateTime lastUpdate, String lastUpdatedBy, int countryId) {
         this.id = id;

@@ -42,8 +42,8 @@ public class AddCustomerScreenController implements Initializable {
     @FXML TextField nameTextField;
     @FXML TextField addressTextField;
     @FXML TextField address2TextField;
-    @FXML ComboBox countryComboBox;
-    @FXML ComboBox firstDivisionComboBox;
+    @FXML ComboBox<Country> countryComboBox;
+    @FXML ComboBox<FirstLevelDivision> firstDivisionComboBox;
     @FXML TextField postalCodeTextField;
     @FXML TextField phoneNumberTextField;
     
@@ -91,17 +91,11 @@ public class AddCustomerScreenController implements Initializable {
      */
     public void populateCountryComboBox() throws SQLException {
         //get all countries from database
-        ObservableList<String> countryNames = FXCollections.observableArrayList();
         ObservableList<Country> countries = FXCollections.observableArrayList();
         
         countries = CountryRepository.getAllCountries();
         
-        //loop thru countries list and get names
-        for (Country c : countries) {
-            countryNames.add(c.getCountryName());
-        }
-        
-        countryComboBox.setItems(countryNames);
+        countryComboBox.setItems(countries);
     }
     /**
      * Populates the FirstLevelDivision ComboBox using first-level division data from the First-Level Divisions table.
@@ -111,16 +105,12 @@ public class AddCustomerScreenController implements Initializable {
      */
     public void populateFirstDivisionComboBox(int countryId) throws Exception {
         ObservableList<FirstLevelDivision> divisions = FXCollections.observableArrayList();
-        ObservableList<String> divisionNames = FXCollections.observableArrayList();
         
         //get divisions with matching country id
         divisions = FirstLevelDivRepository.getDivisionsbyCountryId(countryId);
         
-        for (FirstLevelDivision c : divisions) {
-            divisionNames.add(c.getName());
-        }
         
-        firstDivisionComboBox.setItems(divisionNames);
+        firstDivisionComboBox.setItems(divisions);
     }
     
     /**
